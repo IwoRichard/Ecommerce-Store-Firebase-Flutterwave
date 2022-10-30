@@ -10,6 +10,7 @@ class ForgotPasswordScreen extends StatefulWidget {
 }
 
 class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
+  TextEditingController emailController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,7 +29,6 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
           padding: EdgeInsets.symmetric(horizontal: 20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            // ignore: 
             children: [
               Text(
                 'Enter your email address',
@@ -52,6 +52,9 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   borderRadius: BorderRadius.circular(5),
                 ),
                 child: TextFormField(
+                  controller: emailController,
+                  textInputAction: TextInputAction.done,
+                  keyboardType: TextInputType.emailAddress,
                   cursorColor: Colors.grey,
                   decoration: InputDecoration(
                     hintText: 'example@gmail.com',
@@ -74,7 +77,11 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   borderRadius: BorderRadius.circular(10)
                 ),
                 child: MaterialButton(
-                  onPressed: (){},
+                  onPressed: (){
+                    if (emailController.text.isEmpty || !emailController.text.contains('@')) {
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(behavior: SnackBarBehavior.floating,content: Text('Enter Valid Email Address'),backgroundColor: Colors.red,duration: Duration(seconds: 3),));
+                    }
+                  },
                   child: Text(
                     'Submit',
                     style: TextStyle(fontWeight: FontWeight.w600, fontSize: 17,color:Colors.white)

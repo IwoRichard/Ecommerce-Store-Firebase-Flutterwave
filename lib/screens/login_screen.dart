@@ -9,9 +9,12 @@ class LoginScreen extends StatefulWidget {
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
-}
-
+}   
 class _LoginScreenState extends State<LoginScreen> {
+
+  bool obscureText = true;
+  final formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,133 +22,166 @@ class _LoginScreenState extends State<LoginScreen> {
         child: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  'Welcome ☺️',
-                  style: TextStyle(
-                    fontSize: 20, fontWeight: FontWeight.w600,color: Colors.black,
+            child: Form(
+              key: formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'Welcome back 😁',
+                    style: TextStyle(
+                      fontSize: 20, fontWeight: FontWeight.w600,color: Colors.black,
+                    ),
                   ),
-                ),
-                Text(
-                  'Sign in to continue',
-                ),
-                SizedBox(height: 30,),
-                Text(
-                  'Email',
-                  style: TextStyle(color: Colors.black87,fontWeight: FontWeight.w600),
-                ),
-                SizedBox(height: 5),
-                Container(
-                  height: 45,
-                  decoration: BoxDecoration(
-                    color: Colors.grey.withOpacity(.01),
-                    borderRadius: BorderRadius.circular(5),
+                  Text(
+                    'Sign in to continue',
                   ),
-                  child: TextFormField(
-                    cursorColor: Colors.grey,
-                    decoration: InputDecoration(
-                      hintText: 'example@gmail.com',
-                      hintStyle: TextStyle(fontSize: 15,color: Colors.grey),
-                      border: OutlineInputBorder(
-                        borderSide: BorderSide.none,
+                  SizedBox(height: 30,),
+                  Text(
+                    'Email',
+                    style: TextStyle(color: Colors.black87,fontWeight: FontWeight.w600),
+                  ),
+                  SizedBox(height: 5),
+                  Container(
+                    height: 45,
+                    decoration: BoxDecoration(
+                      color: Colors.grey.withOpacity(.01),
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    child: TextFormField(
+                      textInputAction: TextInputAction.next,
+                      keyboardType: TextInputType.emailAddress,
+                      cursorColor: Colors.grey,
+                      decoration: InputDecoration(
+                        hintText: 'example@gmail.com',
+                        hintStyle: TextStyle(fontSize: 15,color: Colors.grey),
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide.none,
+                        ),
+                        contentPadding: EdgeInsets.only(left: 10),
+                        filled: true
                       ),
-                      contentPadding: EdgeInsets.only(left: 10),
-                      filled: true
+                      validator: (value) {
+                        if (value!.isEmpty || !value.contains('@')) {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(behavior: SnackBarBehavior.floating,content: Text('Enter Valid Email Address'),backgroundColor: Colors.red,duration: Duration(seconds: 3),));   
+                        }
+                      },
                     ),
                   ),
-                ),
-                SizedBox(height: 10,),
-                Text(
-                  'Password',
-                  style: TextStyle(color: Colors.black87,fontWeight: FontWeight.w600),
-                ),
-                SizedBox(height: 5),
-                Container(
-                  height: 45,
-                  decoration: BoxDecoration(
-                    color: Colors.grey.withOpacity(.01),
-                    borderRadius: BorderRadius.circular(5),
+                  SizedBox(height: 10,),
+                  Text(
+                    'Password',
+                    style: TextStyle(color: Colors.black87,fontWeight: FontWeight.w600),
                   ),
-                  child: TextFormField(
-                    cursorColor: Colors.grey,
-                    decoration: InputDecoration(
-                      hintText: 'password',
-                      hintStyle: TextStyle(fontSize: 15,color: Colors.grey),
-                      border: OutlineInputBorder(
-                        borderSide: BorderSide.none,
+                  SizedBox(height: 5),
+                  Container(
+                    height: 45,
+                    decoration: BoxDecoration(
+                      color: Colors.grey.withOpacity(.01),
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    child: TextFormField(
+                      textInputAction: TextInputAction.done,
+                      obscureText: obscureText,
+                      cursorColor: Colors.grey,
+                      decoration: InputDecoration(
+                        suffixIcon: IconButton(
+                          onPressed: (){
+                            setState(() {
+                              obscureText = !obscureText;
+                            });
+                          }, 
+                          icon: obscureText ? 
+                          Icon(Icons.visibility, color: Colors.grey,) : 
+                          Icon(Icons.visibility_off, color: Colors.grey,)
+                        ),
+                        hintText: 'password',
+                        hintStyle: TextStyle(fontSize: 15,color: Colors.grey),
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide.none,
+                        ),
+                        contentPadding: EdgeInsets.only(left: 10),
+                        filled: true
                       ),
-                      contentPadding: EdgeInsets.only(left: 10),
-                      filled: true
+                      validator: (value) {
+                        if (value!.isEmpty || value.length < 7) {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(behavior: SnackBarBehavior.floating,content: Text('Password should be at least 7 characters'),backgroundColor: Colors.red,duration: Duration(seconds: 3),));
+                        }
+                      },
                     ),
                   ),
-                ),
-                SizedBox(height: 10,),
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: InkWell(
-                    onTap: (){
-                      Navigator.push(
-                        context, 
-                        MaterialPageRoute(
-                          builder: (context) => ForgotPasswordScreen(),
-                        )
-                      );
-                    },
-                    child: Text(
-                      'Forgot Password',
-                      style: TextStyle(color: Colors.black87,fontWeight: FontWeight.w600),
-                    ),
-                  ),
-                ),
-                SizedBox(height: 20,),
-                Container(
-                  width: double.infinity,
-                  height: 50,
-                  decoration: BoxDecoration(
-                    border: Border.all(width: 1.2,color: Colors.transparent),
-                    color: Colors.black87,
-                    borderRadius: BorderRadius.circular(10)
-                  ),
-                  child: MaterialButton(
-                    onPressed: (){},
-                    child: Text(
-                      'Login',
-                      style: TextStyle(fontWeight: FontWeight.w600, fontSize: 17,color:Colors.white)
-                    ),
-                  )
-                ),
-                SizedBox(height: 20,),
-                Align(
-                  alignment: Alignment.center,
-                  child: GestureDetector(
-                    onTap:(){
-                      Navigator.push(
-                        context, 
-                        MaterialPageRoute(
-                          builder: (context) => SignUpScreen(), 
-                        )
-                      );
-                    },
-                    child: RichText(
-                      text: TextSpan(
-                        children: [
-                          TextSpan(
-                            text: "Don't have an account? ",
-                            style: TextStyle(color: Colors.black)
-                          ),
-                          TextSpan(
-                            text: 'Sign Up',
-                            style: TextStyle(color: Colors.black87,fontWeight: FontWeight.w600)
-                          ),
-                        ]
+                  SizedBox(height: 10,),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: InkWell(
+                      onTap: (){
+                        Navigator.push(
+                          context, 
+                          MaterialPageRoute(
+                            builder: (context) => ForgotPasswordScreen(),
+                          )
+                        );
+                      },
+                      child: Text(
+                        'Forgot Password',
+                        style: TextStyle(color: Colors.black87,fontWeight: FontWeight.w600),
                       ),
                     ),
                   ),
-                ),
-              ],
+                  SizedBox(height: 20,),
+                  Container(
+                    width: double.infinity,
+                    height: 50,
+                    decoration: BoxDecoration(
+                      border: Border.all(width: 1.2,color: Colors.transparent),
+                      color: Colors.black87,
+                      borderRadius: BorderRadius.circular(10)
+                    ),
+                    child: MaterialButton(
+                      onPressed: (){
+                        final isvalid = formKey.currentState!.validate();
+                        FocusScope.of(context).unfocus();
+                        if (isvalid) {
+                          formKey.currentState!.save();
+                        }
+                      },
+                      child: Text(
+                        'Login',
+                        style: TextStyle(fontWeight: FontWeight.w600, fontSize: 17,color:Colors.white)
+                      ),
+                    )
+                  ),
+                  SizedBox(height: 20,),
+                  Align(
+                    alignment: Alignment.center,
+                    child: GestureDetector(
+                      onTap:(){
+                        Navigator.push(
+                          context, 
+                          MaterialPageRoute(
+                            builder: (context) => SignUpScreen(), 
+                          )
+                        );
+                      },
+                      child: RichText(
+                        text: TextSpan(
+                          children: [
+                            TextSpan(
+                              text: "Don't have an account? ",
+                              style: TextStyle(color: Colors.black)
+                            ),
+                            TextSpan(
+                              text: 'Sign Up',
+                              style: TextStyle(color: Colors.black87,fontWeight: FontWeight.w600)
+                            ),
+                          ]
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
