@@ -60,6 +60,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       validator: (value) {
                         if (value!.isEmpty) {
                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(behavior: SnackBarBehavior.floating,content: Text('Enter Name'),backgroundColor: Colors.red,duration: Duration(seconds: 3),));
+                        }else{
+                          return null;
                         }
                       },
                     ),
@@ -86,6 +88,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       validator: (value) {
                         if (value!.isEmpty || !value.contains('@')) {
                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(behavior: SnackBarBehavior.floating,content: Text('Enter valid Email Address'),backgroundColor: Colors.red,duration: Duration(seconds: 3),));
+                        }else{
+                          return null;
                         }
                       },
                     ),
@@ -128,6 +132,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       validator: (value) {
                         if (value!.isEmpty || value.length < 7) {
                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(behavior: SnackBarBehavior.floating,content: Text('Password should be at least 7 characters'),backgroundColor: Colors.red,duration: Duration(seconds: 3),));
+                        }else{
+                          return null;
                         }
                       },
                     ),
@@ -154,6 +160,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       validator: (value) {
                         if (value!.isEmpty || value.length < 7) {
                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(behavior: SnackBarBehavior.floating,content: Text('Address should be a least 7 characters'),backgroundColor: Colors.red,duration: Duration(seconds: 3),));
+                        }else{
+                          return null;
                         }
                       },
                     ),

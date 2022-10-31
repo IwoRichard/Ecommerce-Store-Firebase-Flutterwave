@@ -1,11 +1,14 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, use_build_context_synchronously
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/button_list.dart';
 import 'package:flutter_signin_button/button_view.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:shop/screens/Auth_Screen/sign_up_screen.dart';
 import 'package:shop/screens/Auth_Screen/forgot_password_screen.dart';
+
+import '../../services/firebase_auth.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -17,6 +20,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
   bool obscureText = true;
   final formKey = GlobalKey<FormState>();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -53,6 +58,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       borderRadius: BorderRadius.circular(5),
                     ),
                     child: TextFormField(
+                      controller: emailController,
                       textInputAction: TextInputAction.next,
                       keyboardType: TextInputType.emailAddress,
                       cursorColor: Colors.grey,
@@ -68,6 +74,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       validator: (value) {
                         if (value!.isEmpty || !value.contains('@')) {
                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(behavior: SnackBarBehavior.floating,content: Text('Enter Valid Email Address'),backgroundColor: Colors.red,duration: Duration(seconds: 3),));   
+                        }else{
+                          return null;
                         }
                       },
                     ),
@@ -85,6 +93,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       borderRadius: BorderRadius.circular(5),
                     ),
                     child: TextFormField(
+                      controller: passwordController,
                       textInputAction: TextInputAction.done,
                       obscureText: obscureText,
                       cursorColor: Colors.grey,
@@ -110,6 +119,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       validator: (value) {
                         if (value!.isEmpty || value.length < 7) {
                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(behavior: SnackBarBehavior.floating,content: Text('Password should be at least 7 characters'),backgroundColor: Colors.red,duration: Duration(seconds: 3),));
+                        }else{
+                          return null;
                         }
                       },
                     ),
@@ -144,11 +155,14 @@ class _LoginScreenState extends State<LoginScreen> {
                       borderRadius: BorderRadius.circular(10)
                     ),
                     child: MaterialButton(
-                      onPressed: (){
+                      onPressed: ()async{
                         final isvalid = formKey.currentState!.validate();
                         FocusScope.of(context).unfocus();
                         if (isvalid) {
-                          formKey.currentState!.save();
+                          User? result = await FirebaseAuthService().login(emailController.text, passwordController.text,context);
+                          if (result != null) {
+                            print('Success!');
+                          }
                         }
                       },
                       child: Text(
