@@ -155,7 +155,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   SizedBox(height: 20,),
                   Align(
                     alignment: Alignment.center,
-                    child: GestureDetector(
+                    child: InkWell(
                       onTap:(){
                         Navigator.push(
                           context, 

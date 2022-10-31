@@ -53,15 +53,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       textInputAction: TextInputAction.next,
                       keyboardType: TextInputType.name,
                       cursorColor: Colors.grey,
-                      decoration: InputDecoration(
-                        hintText: 'Ross Geller',
-                        hintStyle: TextStyle(fontSize: 15,color: Colors.grey),
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide.none,
-                        ),
-                        contentPadding: EdgeInsets.only(left: 10),
-                        filled: true
-                      ),
+                      decoration: textfieldDecoration(),
                       validator: (value) {
                         if (value!.isEmpty) {
                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(behavior: SnackBarBehavior.floating,content: Text('Enter Name'),backgroundColor: Colors.red,duration: Duration(seconds: 3),));
@@ -85,14 +77,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       textInputAction: TextInputAction.next,
                       keyboardType: TextInputType.emailAddress,
                       cursorColor: Colors.grey,
-                      decoration: InputDecoration(
-                        hintText: 'example@gmail.com',
-                        hintStyle: TextStyle(fontSize: 15,color: Colors.grey),
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide.none,
-                        ),
-                        contentPadding: EdgeInsets.only(left: 10),
-                        filled: true
+                      decoration: textfieldDecoration().copyWith(
+                        hintText: 'example@gmail.com'
                       ),
                       validator: (value) {
                         if (value!.isEmpty || !value.contains('@')) {
@@ -159,14 +145,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       textInputAction: TextInputAction.done,
                       keyboardType: TextInputType.emailAddress,
                       cursorColor: Colors.grey,
-                      decoration: InputDecoration(
-                        hintText: 'surulere, Lagos',
-                        hintStyle: TextStyle(fontSize: 15,color: Colors.grey),
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide.none,
-                        ),
-                        contentPadding: EdgeInsets.only(left: 10),
-                        filled: true
+                      decoration: textfieldDecoration().copyWith(
+                        hintText: '09, Unity crescent, off Gasline, Ogun State'
                       ),
                       validator: (value) {
                         if (value!.isEmpty || value.length < 7) {
@@ -201,7 +181,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   SizedBox(height: 10,),
                   Align(
                     alignment: Alignment.center,
-                    child: GestureDetector(
+                    child: InkWell(
                       onTap: () {
                         Navigator.push(
                           context, 
@@ -232,6 +212,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
           ),
         ),
       ),
+    );
+  }
+
+  InputDecoration textfieldDecoration() {
+    return InputDecoration(
+      hintText: 'Ross Geller',
+      hintStyle: TextStyle(fontSize: 15,color: Colors.grey),
+      border: OutlineInputBorder(
+        borderSide: BorderSide.none,
+      ),
+      contentPadding: EdgeInsets.only(left: 10),
+      filled: true
     );
   }
 }
