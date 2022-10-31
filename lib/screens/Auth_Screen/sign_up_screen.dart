@@ -1,16 +1,19 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
-import 'package:shop/screens/forgot_password_screen.dart';
-import 'package:shop/screens/sign_up_screen.dart';
+import 'package:flutter_signin_button/button_list.dart';
+import 'package:flutter_signin_button/button_view.dart';
+import 'package:page_transition/page_transition.dart';
+import 'login_screen.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class SignUpScreen extends StatefulWidget {
+  const SignUpScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
-}   
-class _LoginScreenState extends State<LoginScreen> {
+  State<SignUpScreen> createState() => _SignUpScreenState();
+}
+
+class _SignUpScreenState extends State<SignUpScreen> {
 
   bool obscureText = true;
   final formKey = GlobalKey<FormState>();
@@ -29,15 +32,39 @@ class _LoginScreenState extends State<LoginScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    'Welcome back 😁',
+                    'Create an account',
                     style: TextStyle(
                       fontSize: 20, fontWeight: FontWeight.w600,color: Colors.black,
                     ),
                   ),
                   Text(
-                    'Sign in to continue',
+                    'Discover your fashion',
                   ),
                   SizedBox(height: 30,),
+                  Text(
+                    'Name',
+                    style: TextStyle(color: Colors.black87,fontWeight: FontWeight.w600),
+                  ),
+                  SizedBox(height: 5),
+                  Container(
+                    height: 45,
+                    decoration: BoxDecoration(
+                      color: Colors.grey.withOpacity(.01),
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    child: TextFormField(
+                      textInputAction: TextInputAction.next,
+                      keyboardType: TextInputType.name,
+                      cursorColor: Colors.grey,
+                      decoration: textfieldDecoration(),
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(behavior: SnackBarBehavior.floating,content: Text('Enter Name'),backgroundColor: Colors.red,duration: Duration(seconds: 3),));
+                        }
+                      },
+                    ),
+                  ),
+                  SizedBox(height: 10,),
                   Text(
                     'Email',
                     style: TextStyle(color: Colors.black87,fontWeight: FontWeight.w600),
@@ -53,18 +80,12 @@ class _LoginScreenState extends State<LoginScreen> {
                       textInputAction: TextInputAction.next,
                       keyboardType: TextInputType.emailAddress,
                       cursorColor: Colors.grey,
-                      decoration: InputDecoration(
-                        hintText: 'example@gmail.com',
-                        hintStyle: TextStyle(fontSize: 15,color: Colors.grey),
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide.none,
-                        ),
-                        contentPadding: EdgeInsets.only(left: 10),
-                        filled: true
+                      decoration: textfieldDecoration().copyWith(
+                        hintText: 'example@gmail.com'
                       ),
                       validator: (value) {
                         if (value!.isEmpty || !value.contains('@')) {
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(behavior: SnackBarBehavior.floating,content: Text('Enter Valid Email Address'),backgroundColor: Colors.red,duration: Duration(seconds: 3),));   
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(behavior: SnackBarBehavior.floating,content: Text('Enter valid Email Address'),backgroundColor: Colors.red,duration: Duration(seconds: 3),));
                         }
                       },
                     ),
@@ -82,9 +103,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       borderRadius: BorderRadius.circular(5),
                     ),
                     child: TextFormField(
-                      textInputAction: TextInputAction.done,
-                      obscureText: obscureText,
+                      textInputAction: TextInputAction.next,
                       cursorColor: Colors.grey,
+                      obscureText: obscureText,
                       decoration: InputDecoration(
                         suffixIcon: IconButton(
                           onPressed: (){
@@ -96,7 +117,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           Icon(Icons.visibility, color: Colors.grey,) : 
                           Icon(Icons.visibility_off, color: Colors.grey,)
                         ),
-                        hintText: 'password',
+                        hintText: 'password123',
                         hintStyle: TextStyle(fontSize: 15,color: Colors.grey),
                         border: OutlineInputBorder(
                           borderSide: BorderSide.none,
@@ -112,21 +133,29 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                   SizedBox(height: 10,),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: InkWell(
-                      onTap: (){
-                        Navigator.push(
-                          context, 
-                          MaterialPageRoute(
-                            builder: (context) => ForgotPasswordScreen(),
-                          )
-                        );
-                      },
-                      child: Text(
-                        'Forgot Password',
-                        style: TextStyle(color: Colors.black87,fontWeight: FontWeight.w600),
+                  Text(
+                    'Address',
+                    style: TextStyle(color: Colors.black87,fontWeight: FontWeight.w600),
+                  ),
+                  SizedBox(height: 5),
+                  Container(
+                    height: 45,
+                    decoration: BoxDecoration(
+                      color: Colors.grey.withOpacity(.01),
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    child: TextFormField(
+                      textInputAction: TextInputAction.done,
+                      keyboardType: TextInputType.emailAddress,
+                      cursorColor: Colors.grey,
+                      decoration: textfieldDecoration().copyWith(
+                        hintText: '09, Unity crescent, off Gasline, Ogun State'
                       ),
+                      validator: (value) {
+                        if (value!.isEmpty || value.length < 7) {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(behavior: SnackBarBehavior.floating,content: Text('Address should be a least 7 characters'),backgroundColor: Colors.red,duration: Duration(seconds: 3),));
+                        }
+                      },
                     ),
                   ),
                   SizedBox(height: 20,),
@@ -143,36 +172,48 @@ class _LoginScreenState extends State<LoginScreen> {
                         final isvalid = formKey.currentState!.validate();
                         FocusScope.of(context).unfocus();
                         if (isvalid) {
-                          formKey.currentState!.save();
+                          
                         }
                       },
                       child: Text(
-                        'Login',
+                        'SignUp',
                         style: TextStyle(fontWeight: FontWeight.w600, fontSize: 17,color:Colors.white)
                       ),
                     )
                   ),
-                  SizedBox(height: 20,),
+                  SizedBox(height: 10,),
+                  Align(
+                    alignment: Alignment.center,
+                    child: SignInButton(
+                      Buttons.Google,
+                      text: 'Sign up with Google',
+                      elevation: 0.5,
+                      onPressed: (){}
+                    ),
+                  ),
+                  SizedBox(height: 10,),
                   Align(
                     alignment: Alignment.center,
                     child: InkWell(
-                      onTap:(){
+                      onTap: () {
                         Navigator.push(
                           context, 
-                          MaterialPageRoute(
-                            builder: (context) => SignUpScreen(), 
-                          )
+                          PageTransition(
+                            child: LoginScreen(), 
+                            type: PageTransitionType.rightToLeft,
+                            duration: Duration(milliseconds: 300)
+                          ),
                         );
                       },
                       child: RichText(
                         text: TextSpan(
                           children: [
                             TextSpan(
-                              text: "Don't have an account? ",
+                              text: "Already have an account? ",
                               style: TextStyle(color: Colors.black)
                             ),
                             TextSpan(
-                              text: 'Sign Up',
+                              text: 'Login',
                               style: TextStyle(color: Colors.black87,fontWeight: FontWeight.w600)
                             ),
                           ]
@@ -186,6 +227,18 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         ),
       ),
+    );
+  }
+
+InputDecoration textfieldDecoration() {
+    return InputDecoration(
+      hintText: 'Ross Geller',
+      hintStyle: TextStyle(fontSize: 15,color: Colors.grey),
+      border: OutlineInputBorder(
+        borderSide: BorderSide.none,
+      ),
+      contentPadding: EdgeInsets.only(left: 10),
+      filled: true
     );
   }
 }

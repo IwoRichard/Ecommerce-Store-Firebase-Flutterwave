@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 import 'package:flutter/material.dart';
-import 'package:shop/screens/login_screen.dart';
-import 'package:shop/screens/sign_up_screen.dart';
+import 'package:shop/screens/Auth_Screen/sign_up_screen.dart';
+import 'login_screen.dart';
 
 class DefaultHome extends StatelessWidget {
   const DefaultHome({super.key});

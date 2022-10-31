@@ -1,16 +1,19 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
-import 'package:shop/screens/login_screen.dart';
+import 'package:flutter_signin_button/button_list.dart';
+import 'package:flutter_signin_button/button_view.dart';
+import 'package:page_transition/page_transition.dart';
+import 'package:shop/screens/Auth_Screen/sign_up_screen.dart';
+import 'package:shop/screens/Auth_Screen/forgot_password_screen.dart';
 
-class SignUpScreen extends StatefulWidget {
-  const SignUpScreen({super.key});
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
 
   @override
-  State<SignUpScreen> createState() => _SignUpScreenState();
-}
-
-class _SignUpScreenState extends State<SignUpScreen> {
+  State<LoginScreen> createState() => _LoginScreenState();
+}   
+class _LoginScreenState extends State<LoginScreen> {
 
   bool obscureText = true;
   final formKey = GlobalKey<FormState>();
@@ -29,39 +32,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    'Create an account',
+                    'Welcome back 😁',
                     style: TextStyle(
                       fontSize: 20, fontWeight: FontWeight.w600,color: Colors.black,
                     ),
                   ),
                   Text(
-                    'Discover your fashion',
+                    'Sign in to continue',
                   ),
                   SizedBox(height: 30,),
-                  Text(
-                    'Name',
-                    style: TextStyle(color: Colors.black87,fontWeight: FontWeight.w600),
-                  ),
-                  SizedBox(height: 5),
-                  Container(
-                    height: 45,
-                    decoration: BoxDecoration(
-                      color: Colors.grey.withOpacity(.01),
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                    child: TextFormField(
-                      textInputAction: TextInputAction.next,
-                      keyboardType: TextInputType.name,
-                      cursorColor: Colors.grey,
-                      decoration: textfieldDecoration(),
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(behavior: SnackBarBehavior.floating,content: Text('Enter Name'),backgroundColor: Colors.red,duration: Duration(seconds: 3),));
-                        }
-                      },
-                    ),
-                  ),
-                  SizedBox(height: 10,),
                   Text(
                     'Email',
                     style: TextStyle(color: Colors.black87,fontWeight: FontWeight.w600),
@@ -77,12 +56,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       textInputAction: TextInputAction.next,
                       keyboardType: TextInputType.emailAddress,
                       cursorColor: Colors.grey,
-                      decoration: textfieldDecoration().copyWith(
-                        hintText: 'example@gmail.com'
+                      decoration: InputDecoration(
+                        hintText: 'example@gmail.com',
+                        hintStyle: TextStyle(fontSize: 15,color: Colors.grey),
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide.none,
+                        ),
+                        contentPadding: EdgeInsets.only(left: 10),
+                        filled: true
                       ),
                       validator: (value) {
                         if (value!.isEmpty || !value.contains('@')) {
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(behavior: SnackBarBehavior.floating,content: Text('Enter valid Email Address'),backgroundColor: Colors.red,duration: Duration(seconds: 3),));
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(behavior: SnackBarBehavior.floating,content: Text('Enter Valid Email Address'),backgroundColor: Colors.red,duration: Duration(seconds: 3),));   
                         }
                       },
                     ),
@@ -100,9 +85,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       borderRadius: BorderRadius.circular(5),
                     ),
                     child: TextFormField(
-                      textInputAction: TextInputAction.next,
-                      cursorColor: Colors.grey,
+                      textInputAction: TextInputAction.done,
                       obscureText: obscureText,
+                      cursorColor: Colors.grey,
                       decoration: InputDecoration(
                         suffixIcon: IconButton(
                           onPressed: (){
@@ -114,7 +99,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           Icon(Icons.visibility, color: Colors.grey,) : 
                           Icon(Icons.visibility_off, color: Colors.grey,)
                         ),
-                        hintText: 'password123',
+                        hintText: 'password',
                         hintStyle: TextStyle(fontSize: 15,color: Colors.grey),
                         border: OutlineInputBorder(
                           borderSide: BorderSide.none,
@@ -130,29 +115,23 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                   ),
                   SizedBox(height: 10,),
-                  Text(
-                    'Address',
-                    style: TextStyle(color: Colors.black87,fontWeight: FontWeight.w600),
-                  ),
-                  SizedBox(height: 5),
-                  Container(
-                    height: 45,
-                    decoration: BoxDecoration(
-                      color: Colors.grey.withOpacity(.01),
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                    child: TextFormField(
-                      textInputAction: TextInputAction.done,
-                      keyboardType: TextInputType.emailAddress,
-                      cursorColor: Colors.grey,
-                      decoration: textfieldDecoration().copyWith(
-                        hintText: '09, Unity crescent, off Gasline, Ogun State'
-                      ),
-                      validator: (value) {
-                        if (value!.isEmpty || value.length < 7) {
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(behavior: SnackBarBehavior.floating,content: Text('Address should be a least 7 characters'),backgroundColor: Colors.red,duration: Duration(seconds: 3),));
-                        }
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: InkWell(
+                      onTap: (){
+                        Navigator.push(
+                          context, 
+                          PageTransition(
+                            child: ForgotPasswordScreen(), 
+                            type: PageTransitionType.rightToLeft,
+                            duration: Duration(milliseconds: 300)
+                          ),
+                        );
                       },
+                      child: Text(
+                        'Forgot Password',
+                        style: TextStyle(color: Colors.black87,fontWeight: FontWeight.w600),
+                      ),
                     ),
                   ),
                   SizedBox(height: 20,),
@@ -169,11 +148,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         final isvalid = formKey.currentState!.validate();
                         FocusScope.of(context).unfocus();
                         if (isvalid) {
-                          
+                          formKey.currentState!.save();
                         }
                       },
                       child: Text(
-                        'SignUp',
+                        'Login',
                         style: TextStyle(fontWeight: FontWeight.w600, fontSize: 17,color:Colors.white)
                       ),
                     )
@@ -181,24 +160,35 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   SizedBox(height: 10,),
                   Align(
                     alignment: Alignment.center,
+                    child: SignInButton(
+                      Buttons.Google,
+                      elevation: 0.5,
+                      onPressed: (){}
+                    ),
+                  ),
+                  SizedBox(height: 20,),
+                  Align(
+                    alignment: Alignment.center,
                     child: InkWell(
-                      onTap: () {
+                      onTap:(){
                         Navigator.push(
                           context, 
-                          MaterialPageRoute(
-                            builder: (context) => LoginScreen(),
-                          )
+                          PageTransition(
+                            child: SignUpScreen(), 
+                            type: PageTransitionType.rightToLeft,
+                            duration: Duration(milliseconds: 300)
+                          ),
                         );
                       },
                       child: RichText(
                         text: TextSpan(
                           children: [
                             TextSpan(
-                              text: "Already have an account? ",
+                              text: "Don't have an account? ",
                               style: TextStyle(color: Colors.black)
                             ),
                             TextSpan(
-                              text: 'Login',
+                              text: 'Sign Up',
                               style: TextStyle(color: Colors.black87,fontWeight: FontWeight.w600)
                             ),
                           ]
@@ -212,18 +202,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
           ),
         ),
       ),
-    );
-  }
-
-  InputDecoration textfieldDecoration() {
-    return InputDecoration(
-      hintText: 'Ross Geller',
-      hintStyle: TextStyle(fontSize: 15,color: Colors.grey),
-      border: OutlineInputBorder(
-        borderSide: BorderSide.none,
-      ),
-      contentPadding: EdgeInsets.only(left: 10),
-      filled: true
     );
   }
 }
