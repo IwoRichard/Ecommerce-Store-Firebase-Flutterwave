@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, use_build_context_synchronously
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, use_build_context_synchronously, avoid_print
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +7,7 @@ import 'package:flutter_signin_button/button_view.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:shop/screens/Auth_Screen/sign_up_screen.dart';
 import 'package:shop/screens/Auth_Screen/forgot_password_screen.dart';
+import 'package:shop/widgets/bottom_nav.dart';
 
 import '../../services/firebase_auth.dart';
 
@@ -162,6 +163,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           User? result = await FirebaseAuthService().login(emailController.text, passwordController.text,context);
                           if (result != null) {
                             print('Success!');
+                            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => BottomNav()), (route) => false);
                           }
                         }
                       },
@@ -177,7 +179,12 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: SignInButton(
                       Buttons.Google,
                       elevation: 0.5,
-                      onPressed: (){}
+                      onPressed: ()async{
+                        User? result = await FirebaseAuthService().googleSignIn();
+                        if (result != null) {
+                          print('success');
+                        }
+                      }
                     ),
                   ),
                   SizedBox(height: 20,),

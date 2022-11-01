@@ -2,7 +2,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:shop/screens/Auth_Screen/default_home_screen.dart';
-import 'package:shop/screens/Auth_Screen/login_screen.dart';
+import 'package:shop/services/firebase_auth.dart';
+import 'package:shop/widgets/bottom_nav.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,7 +18,15 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
-      home: LoginScreen(),
+      home: StreamBuilder(
+        stream: FirebaseAuthService().firebaseAuth.authStateChanges(),
+        builder: (context,AsyncSnapshot snapshot){
+          if (snapshot.hasData) {
+            return BottomNav();
+          }
+          return DefaultHome();
+        }
+      ),
     );
   }
 }

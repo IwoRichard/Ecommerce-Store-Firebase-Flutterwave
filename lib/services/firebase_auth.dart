@@ -10,16 +10,9 @@ class FirebaseAuthService{
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   //Register User
-  Future <User?> register(String email, String password, String name,String address, String userId, BuildContext context)async{
+  Future <User?> register(String email, String password,BuildContext context)async{
     try {
      UserCredential userCredential =  await firebaseAuth.createUserWithEmailAndPassword(email: email, password: password,);
-     await firestore.collection('userInfo').add({
-        "email": email,
-        "name": name,
-        "address": address,
-        "date": DateTime.now(),
-        "userId": userId
-      });
     return userCredential.user; 
     } on FirebaseAuthException catch(e){
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.message.toString()),backgroundColor: Colors.red,));
@@ -60,6 +53,15 @@ class FirebaseAuthService{
           idToken: googleAuth.idToken
         );
         UserCredential userCredential = await firebaseAuth.signInWithCredential(credential);
+        if (userCredential.additionalUserInfo!.isNewUser) {
+          await firestore.collection('userInfo').doc(userCredential.user!.uid).set({
+            "email": userCredential.user!.email,
+            "name": userCredential.user!.displayName,
+            "address": '',
+            "date": DateTime.now(),
+            "userId": userCredential.user!.uid
+          });
+        }
         return userCredential.user;
       }
     } catch (e) {

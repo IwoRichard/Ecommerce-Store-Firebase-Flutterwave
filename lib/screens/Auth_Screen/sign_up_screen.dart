@@ -1,9 +1,13 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, use_build_context_synchronously, avoid_print
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/button_list.dart';
 import 'package:flutter_signin_button/button_view.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:shop/services/firestore_database.dart';
+import '../../services/firebase_auth.dart';
+import '../../widgets/bottom_nav.dart';
 import 'login_screen.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -17,6 +21,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   bool obscureText = true;
   final formKey = GlobalKey<FormState>();
+  TextEditingController nameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController addressController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -53,6 +61,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       borderRadius: BorderRadius.circular(5),
                     ),
                     child: TextFormField(
+                      controller: nameController,
                       textInputAction: TextInputAction.next,
                       keyboardType: TextInputType.name,
                       cursorColor: Colors.grey,
@@ -79,6 +88,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       borderRadius: BorderRadius.circular(5),
                     ),
                     child: TextFormField(
+                      controller: emailController,
                       textInputAction: TextInputAction.next,
                       keyboardType: TextInputType.emailAddress,
                       cursorColor: Colors.grey,
@@ -107,6 +117,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       borderRadius: BorderRadius.circular(5),
                     ),
                     child: TextFormField(
+                      controller: passwordController,
                       textInputAction: TextInputAction.next,
                       cursorColor: Colors.grey,
                       obscureText: obscureText,
@@ -151,6 +162,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       borderRadius: BorderRadius.circular(5),
                     ),
                     child: TextFormField(
+                      controller: addressController,
                       textInputAction: TextInputAction.done,
                       keyboardType: TextInputType.emailAddress,
                       cursorColor: Colors.grey,
@@ -176,11 +188,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       borderRadius: BorderRadius.circular(10)
                     ),
                     child: MaterialButton(
-                      onPressed: (){
+                      onPressed: ()async{
                         final isvalid = formKey.currentState!.validate();
                         FocusScope.of(context).unfocus();
                         if (isvalid) {
-                          
+                          User? result = 
+                          await FirebaseAuthService().register(emailController.text, passwordController.text, context);
+                          await FirestoreService().UserInfo(emailController.text, nameController.text, addressController.text);
+                          if (result != null) {
+                            print('Success!');
+                            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => BottomNav()), (route) => false);
+                          }
                         }
                       },
                       child: Text(
@@ -196,7 +214,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       Buttons.Google,
                       text: 'Sign up with Google',
                       elevation: 0.5,
-                      onPressed: (){}
+                      onPressed: ()async{
+                        User? result = await FirebaseAuthService().googleSignIn();
+                        if (result != null) {
+                          print('success');
+                        }
+                      }
                     ),
                   ),
                   SizedBox(height: 10,),
