@@ -37,7 +37,6 @@ dependencies:
   firebase_storage: 
   firebase_storage_web:
   provider:
-  iconsax: ^0.0.8
   page_transition:
   flutter_signin_button:
 

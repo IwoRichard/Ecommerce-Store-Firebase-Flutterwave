@@ -211,7 +211,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   Align(
                     alignment: Alignment.center,
                     child: SignInButton(
-                      Buttons.Google,
+                      Buttons.Twitter,
                       text: 'Sign up with Google',
                       elevation: 0.5,
                       onPressed: ()async{

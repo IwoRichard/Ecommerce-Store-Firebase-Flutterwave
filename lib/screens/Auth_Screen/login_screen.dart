@@ -7,8 +7,8 @@ import 'package:flutter_signin_button/button_view.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:shop/screens/Auth_Screen/sign_up_screen.dart';
 import 'package:shop/screens/Auth_Screen/forgot_password_screen.dart';
+import 'package:shop/screens/Main_Screen/home_screen.dart';
 import 'package:shop/widgets/bottom_nav.dart';
-
 import '../../services/firebase_auth.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -177,13 +177,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   Align(
                     alignment: Alignment.center,
                     child: SignInButton(
-                      Buttons.Google,
+                      Buttons.Twitter,
                       elevation: 0.5,
                       onPressed: ()async{
-                        User? result = await FirebaseAuthService().googleSignIn();
-                        if (result != null) {
-                          print('success');
-                        }
+                        await FirebaseAuthService().googleSignIn();
                       }
                     ),
                   ),
