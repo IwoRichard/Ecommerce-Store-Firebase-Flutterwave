@@ -53,7 +53,7 @@ class _BottomNavState extends State<BottomNav> {
         unselectedItemColor: Colors.grey.withOpacity(.5),
         showSelectedLabels: false,
         showUnselectedLabels: false,
-        elevation: 10,
+        elevation: 5,
         items: [
           BottomNavigationBarItem(label: 'Home',icon: Icon(Icons.home_rounded)),
           BottomNavigationBarItem(label: 'Explore',icon: Icon(Icons.explore)),
