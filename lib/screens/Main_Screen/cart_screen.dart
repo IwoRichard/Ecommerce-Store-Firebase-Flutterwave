@@ -13,6 +13,11 @@ class _CartScreenState extends State<CartScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: .5,
+        title: Text('My Cart',style: TextStyle(fontSize: 34,fontWeight: FontWeight.w600,color: Colors.black),),
+      ),
       body: Center(child: Text('Cart'),),
     );
   }

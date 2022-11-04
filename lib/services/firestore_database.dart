@@ -15,7 +15,7 @@ class FirestoreService{
         "name": name,
         "address": address,
         "date": DateTime.now(),
-        "userId": _uid
+        "userId": _uid,
       });
     } catch (e) {
       print(e);

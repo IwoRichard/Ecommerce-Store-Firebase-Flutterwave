@@ -17,19 +17,9 @@ class _ExploreScreenState extends State<ExploreScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Home'),
-        centerTitle: true,
-        actions: [
-          TextButton.icon(
-            onPressed: ()async{
-              await FirebaseAuthService().signout();
-              Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => LoginScreen()), (route) => false);
-            }, 
-            icon: const Icon(Icons.logout), 
-            label: const Text('Sign out'),
-            style: TextButton.styleFrom(foregroundColor: Colors.white),
-          )
-        ],
+        backgroundColor: Colors.white,
+        elevation: .5,
+        title: Text('Explore',style: TextStyle(fontSize: 34,fontWeight: FontWeight.w600,color: Colors.black),),
       ),
       body: Center(child: Text('Explore'),),
     );

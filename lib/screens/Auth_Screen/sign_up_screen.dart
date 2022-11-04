@@ -211,14 +211,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   Align(
                     alignment: Alignment.center,
                     child: SignInButton(
-                      Buttons.Twitter,
+                      Buttons.GoogleDark,
                       text: 'Sign up with Google',
                       elevation: 0.5,
                       onPressed: ()async{
-                        User? result = await FirebaseAuthService().googleSignIn();
-                        if (result != null) {
-                          print('success');
-                        }
+                        await FirebaseAuthService().googleSignIn();
+                        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => BottomNav()), (route) => false);
                       }
                     ),
                   ),

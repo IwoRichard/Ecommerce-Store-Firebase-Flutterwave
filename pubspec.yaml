@@ -39,6 +39,7 @@ dependencies:
   provider:
   page_transition:
   flutter_signin_button:
+  flutter_staggered_grid_view: ^0.6.2
 
 
   # The following adds the Cupertino Icons font to your application.

@@ -177,10 +177,11 @@ class _LoginScreenState extends State<LoginScreen> {
                   Align(
                     alignment: Alignment.center,
                     child: SignInButton(
-                      Buttons.Twitter,
+                      Buttons.Google,
                       elevation: 0.5,
                       onPressed: ()async{
                         await FirebaseAuthService().googleSignIn();
+                        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => BottomNav()), (route) => false);
                       }
                     ),
                   ),

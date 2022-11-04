@@ -1,6 +1,9 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables,use_build_context_synchronously
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:shop/models/chip_model.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -10,19 +13,13 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final User? user = FirebaseAuth.instance.currentUser;
 
-  List<String> items = [
-    'home',
-    'explore',
-    'search',
-    'feed',
-    'post',
-    'activity',
-    'settings',
-    'profile',
-  ];
+  List<CategoryChip> choiceChips = chips;
 
   int current = 0;
+
+  String name = '';
 
   @override
   Widget build(BuildContext context) {
@@ -30,19 +27,19 @@ class _HomeScreenState extends State<HomeScreen> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        elevation: 0,
+        elevation: .5,
         title: Text('Home',style: TextStyle(fontSize: 34,fontWeight: FontWeight.w600,color: Colors.black),),
         actions: [
           Chip(
-            backgroundColor: Color.fromARGB(246, 212, 165, 7),
-            label: Text('Get 2\$')
+            backgroundColor: Color.fromARGB(246, 7, 212, 92),
+            label: displayName(),
           ),
           SizedBox(width: 15,)
         ],
         bottom: PreferredSize(
           preferredSize: Size.fromHeight(55),
           child: Padding(
-            padding: EdgeInsets.only(left: 15,right: 15),
+            padding: EdgeInsets.only(left: 15,right: 15,bottom: 5),
             child: Container(
               height: 40,
               decoration: BoxDecoration(
@@ -70,55 +67,65 @@ class _HomeScreenState extends State<HomeScreen> {
           ) 
         ),
       ),
-      body: NestedScrollView(
-        headerSliverBuilder:(context, innerBoxIsScrolled) {
-          return [
-            SliverAppBar(
-              backgroundColor: Colors.white,
-              expandedHeight: 180,
-              flexibleSpace: FlexibleSpaceBar(
-                background: Padding(
-                  padding: const EdgeInsets.only(left: 15,right: 15,top: 15),
-                  child: Container(color: Colors.grey.withOpacity(.2),),
-                ),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15),
+        child: Column(
+          children: [
+            SizedBox(
+              height: 60,
+              width: double.infinity,
+              child: ListView.builder(
+                physics: BouncingScrollPhysics(),
+                itemCount: choiceChips.length,
+                scrollDirection: Axis.horizontal,
+                itemBuilder: (context,index){
+                  return GestureDetector(
+                    onTap: (){
+                      setState(() {
+                        current = index;
+                      });
+                    },
+                    child: Container(
+                      margin: EdgeInsets.only(right: 5),
+                      child: Chip(
+                        backgroundColor: current == index ? Colors.black87 : Colors.grey.withOpacity(.5),
+                        avatar: CircleAvatar(
+                          foregroundImage: AssetImage(choiceChips[index].image),
+                          backgroundColor: Colors.white,),
+                        label: Text(
+                          choiceChips[index].name,
+                          style: TextStyle(color: current == index ? Colors.white : Colors.black.withOpacity(.5)),
+                        )
+                      ),
+                    ),
+                  );
+                }
               ),
             ),
-          ];
-        }, 
-        body: Container(
-          margin: EdgeInsets.only(left: 15),
-          width: double.infinity,
-          height: double.infinity,
-          child: Column(
-            children: [
-              SizedBox(
-                height: 60,
-                width: double.infinity,
-                child: ListView.builder(
-                  physics: BouncingScrollPhysics(),
-                  itemCount: items.length,
-                  scrollDirection: Axis.horizontal,
-                  itemBuilder: (context,index){
-                    return GestureDetector(
-                      onTap: (){
-                        setState(() {
-                          current = index;
-                        });
-                      },
-                      child: Container(
-                        margin: EdgeInsets.only(right: 5),
-                        child: Chip(
-                          label: Text(items[index])
-                        ),
-                      ),
-                    );
-                  }
-                ),
+            Expanded(
+              child: Text(
+                choiceChips[current].name,
+                style: TextStyle(fontSize: 50),
               )
-            ],
-          ),
+            )
+          ],
         ),
-        ),
+      )
+    );
+  }
+
+StreamBuilder<Null> displayName() {
+  return StreamBuilder(
+      stream: FirebaseFirestore.instance.collection('userInfo').doc(user?.uid).get().then((snapshot) async {
+        if (snapshot.exists) {
+          setState(() {
+            name = snapshot.data()!['name'];
+          });
+        }
+      }).asStream(),
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        return Text(name);
+      },
     );
   }
 }

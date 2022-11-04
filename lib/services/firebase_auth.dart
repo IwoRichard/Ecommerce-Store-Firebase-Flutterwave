@@ -53,6 +53,17 @@ class FirebaseAuthService{
           idToken: googleAuth.idToken
         );
         UserCredential userCredential = await firebaseAuth.signInWithCredential(credential);
+        if (userCredential.additionalUserInfo!.isNewUser) {
+          await firestore.collection('userInfo')
+          .doc(userCredential.user!.uid)
+          .set({
+            "email": userCredential.user!.email,
+            "name": userCredential.user!.displayName,
+            "address": 'add address',
+            "date": DateTime.now(),
+            "userId": userCredential.user!.uid,
+          });
+        }
         return userCredential.user;
       }
     } catch (e) {
