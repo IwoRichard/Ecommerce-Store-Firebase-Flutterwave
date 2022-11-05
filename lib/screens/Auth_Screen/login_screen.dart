@@ -7,7 +7,6 @@ import 'package:flutter_signin_button/button_view.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:shop/screens/Auth_Screen/sign_up_screen.dart';
 import 'package:shop/screens/Auth_Screen/forgot_password_screen.dart';
-import 'package:shop/screens/Main_Screen/home_screen.dart';
 import 'package:shop/widgets/bottom_nav.dart';
 import '../../services/firebase_auth.dart';
 

@@ -2,8 +2,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:shop/widgets/list_Tile.dart';
 import '../../services/firebase_auth.dart';
 import '../Auth_Screen/login_screen.dart';
+
 
 class UserProfileScreen extends StatefulWidget {
   const UserProfileScreen({super.key});
@@ -14,11 +16,12 @@ class UserProfileScreen extends StatefulWidget {
 
 class _UserProfileScreenState extends State<UserProfileScreen> {
   final User? user = FirebaseAuth.instance.currentUser;
+  TextEditingController addressController = TextEditingController(text: '');
+  TextEditingController nameController = TextEditingController(text: '');
   
   String name = '';
   String address = '';
   String email = '';
-  
 
   @override
   Widget build(BuildContext context) {
@@ -47,62 +50,39 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('User Details',style: TextStyle(fontWeight: FontWeight.w500,color: Colors.grey,)),
+                  tileTile('User Details'),
                   SizedBox(height: 10,),
-                  Container(
-                    color: Colors.grey.withOpacity(.1),
-                    child: Column(
-                      children: [
-                        ListTile(
-                          title: Text('Display Name',style: TextStyle(fontWeight: FontWeight.w600),),
-                          subtitle: Text(name),
-                          trailing: Chip(label: Text('Edit')),
-                        ),
-                        Divider(height: 0,),
-                        ListTile(
-                          title: Text('Email Address',style: TextStyle(fontWeight: FontWeight.w600),),
-                          subtitle: Text(email),
-                        ),
-                        Divider(height: 0,),
-                        ListTile(
-                          title: Text('Delivery Address',style: TextStyle(fontWeight: FontWeight.w600),),
-                          subtitle: Text(address),
-                          trailing: GestureDetector(
-                            onTap: (){
-                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(address)));
-                            },
-                            child: Chip(label: Text('Edit'))),
-                        ),
-                      ],
-                    ),
+                  UserTile(
+                    title: 'Display Name',
+                    subtitle: name,
+                    nameController: nameController,
+                    trailing: 'Edit',
+                  ),
+                  UserTile(
+                    title: 'Email',
+                    subtitle: email,
+                  ),
+                  UserTile(
+                    title: 'Delivery Address',
+                    subtitle: address == '' ? 'add adress': address,
+                    addressController: addressController,
+                    trailing: 'Edit',
                   ),
                   SizedBox(height: 10,),
-                  Text('Security Settings',style: TextStyle(fontWeight: FontWeight.w500,color: Colors.grey,)),
+                  tileTile('Security Settings'),
                   SizedBox(height: 10,),
-                  Container(
-                    color: Colors.grey.withOpacity(.1),
-                    child: ListTile(
-                      title: Text('Password Reset',style: TextStyle(fontWeight: FontWeight.w600),),
-                      subtitle: Text('***********'),
-                      trailing: Chip(label: Text('Edit')),
-                    ),
+                  UserTile(
+                    title: 'Reset Password',
+                    subtitle: '************',
                   ),
                   SizedBox(height: 10,),
-                  Text('Others',style: TextStyle(fontWeight: FontWeight.w500,color: Colors.grey,)),
+                  tileTile('Others'),
                   SizedBox(height: 10,),
-                  Container(
-                    color: Colors.grey.withOpacity(.1),
-                    child: Column(
-                      children: [
-                        ListTile(
-                          title: Text('Notifications',style: TextStyle(fontWeight: FontWeight.w600),),
-                        ),
-                        Divider(height: 0,),
-                        ListTile(
-                          title: Text('Support',style: TextStyle(fontWeight: FontWeight.w600),),
-                        ),
-                      ],
-                    ),
+                  UserTile(
+                    title: 'Notification',
+                  ),
+                  UserTile(
+                    title: 'Support',
                   ),
                   SizedBox(height: 10,),
                   TextButton.icon(
@@ -129,5 +109,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
         },
       ),
     );
+  }
+  Widget tileTile(String title){
+    return Text(title);
   }
 }

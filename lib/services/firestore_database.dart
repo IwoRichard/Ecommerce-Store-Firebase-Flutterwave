@@ -22,7 +22,7 @@ class FirestoreService{
     }
   }
 
-  Future updateUserInfo(String docId,String name, String address)async{
+  Future updateUserInfo(String name, String address)async{
     try {
       final User? user = FirebaseAuth.instance.currentUser;
       final _uid = user!.uid;
@@ -34,4 +34,30 @@ class FirestoreService{
       print(e);
     }
   }
+
+    Future updateUserAddress(String address)async{
+    try {
+      final User? user = FirebaseAuth.instance.currentUser;
+      final _uid = user!.uid;
+      await firestore.collection('userInfo').doc(_uid).update({
+        "address": address,
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
+
+    Future updateUserName(String name)async{
+    try {
+      final User? user = FirebaseAuth.instance.currentUser;
+      final _uid = user!.uid;
+      await firestore.collection('userInfo').doc(_uid).update({
+        "name":name,
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  
 }
