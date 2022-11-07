@@ -18,6 +18,7 @@ class LoginScreen extends StatefulWidget {
 }   
 class _LoginScreenState extends State<LoginScreen> {
 
+  bool isLoading = false;
   bool obscureText = true;
   final formKey = GlobalKey<FormState>();
   TextEditingController emailController = TextEditingController();
@@ -71,13 +72,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         contentPadding: EdgeInsets.only(left: 10),
                         filled: true
                       ),
-                      validator: (value) {
-                        if (value!.isEmpty || !value.contains('@')) {
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(behavior: SnackBarBehavior.floating,content: Text('Enter Valid Email Address'),backgroundColor: Colors.red,duration: Duration(seconds: 3),));   
-                        }else{
-                          return null;
-                        }
-                      },
+                      validator: validateEmail
                     ),
                   ),
                   SizedBox(height: 10,),
@@ -116,20 +111,14 @@ class _LoginScreenState extends State<LoginScreen> {
                         contentPadding: EdgeInsets.only(left: 10),
                         filled: true
                       ),
-                      validator: (value) {
-                        if (value!.isEmpty || value.length < 7) {
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(behavior: SnackBarBehavior.floating,content: Text('Password should be at least 7 characters'),backgroundColor: Colors.red,duration: Duration(seconds: 3),));
-                        }else{
-                          return null;
-                        }
-                      },
+                      validator: validatePassword
                     ),
                   ),
                   SizedBox(height: 10,),
                   Align(
                     alignment: Alignment.centerRight,
-                    child: InkWell(
-                      onTap: (){
+                    child: TextButton(
+                      onPressed: (){
                         Navigator.push(
                           context, 
                           PageTransition(
@@ -151,11 +140,14 @@ class _LoginScreenState extends State<LoginScreen> {
                     height: 50,
                     decoration: BoxDecoration(
                       border: Border.all(width: 1.2,color: Colors.transparent),
-                      color: Colors.black87,
                       borderRadius: BorderRadius.circular(10)
                     ),
                     child: MaterialButton(
-                      onPressed: ()async{
+                      color: Colors.black87,
+                      disabledColor: Colors.grey.withOpacity(.5),
+                      disabledTextColor: Colors.black.withOpacity(.5),
+                      onPressed: isLoading ? null : ()async{
+                        setState(() {isLoading = true;});
                         final isvalid = formKey.currentState!.validate();
                         FocusScope.of(context).unfocus();
                         if (isvalid) {
@@ -165,6 +157,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => BottomNav()), (route) => false);
                           }
                         }
+                        setState(() {isLoading = false;});
                       },
                       child: Text(
                         'Login',
@@ -187,8 +180,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   SizedBox(height: 20,),
                   Align(
                     alignment: Alignment.center,
-                    child: InkWell(
-                      onTap:(){
+                    child: TextButton(
+                      onPressed: (){
                         Navigator.push(
                           context, 
                           PageTransition(
@@ -197,23 +190,23 @@ class _LoginScreenState extends State<LoginScreen> {
                             duration: Duration(milliseconds: 300)
                           ),
                         );
-                      },
+                      }, 
                       child: RichText(
-                        text: TextSpan(
-                          children: [
-                            TextSpan(
-                              text: "Don't have an account? ",
-                              style: TextStyle(color: Colors.black)
-                            ),
-                            TextSpan(
-                              text: 'Sign Up',
-                              style: TextStyle(color: Colors.black87,fontWeight: FontWeight.w600)
-                            ),
-                          ]
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: "Don't have an account? ",
+                                style: TextStyle(color: Colors.black)
+                              ),
+                              TextSpan(
+                                text: 'Sign Up',
+                                style: TextStyle(color: Colors.black87,fontWeight: FontWeight.w600)
+                              ),
+                            ]
+                          ),
                         ),
-                      ),
                     ),
-                  ),
+                  )
                 ],
               ),
             ),
@@ -222,4 +215,41 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
     );
   }
+
+  //To validate email
+  String? validateEmail(String? formEmail){
+    String pattern = r'\w+@\w+\.\w+';
+    RegExp regExp = RegExp(pattern);
+    if (formEmail!.isEmpty || formEmail == null || !regExp.hasMatch(formEmail)) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          behavior: SnackBarBehavior.floating,
+          content: Text('Enter Valid Email Address'),
+          backgroundColor: Colors.red,
+          duration: Duration(seconds: 4),
+          )
+        );   
+    }else{
+      return null;
+    }
+    return null;
+  }
+
+  //To validate password
+  String? validatePassword(String? formPassword){
+    if (formPassword!.isEmpty || formPassword == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          behavior: SnackBarBehavior.floating,
+          content: Text('Password is required'),
+          backgroundColor: Colors.red,
+          duration: Duration(seconds: 3),
+        )
+      );
+    }else{
+      return null;
+    }
+    return null;
+  }
+
 }

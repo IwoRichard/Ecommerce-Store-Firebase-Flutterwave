@@ -19,6 +19,7 @@ class SignUpScreen extends StatefulWidget {
 
 class _SignUpScreenState extends State<SignUpScreen> {
 
+  bool isLoading = false;
   bool obscureText = true;
   final formKey = GlobalKey<FormState>();
   TextEditingController nameController = TextEditingController();
@@ -67,11 +68,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       cursorColor: Colors.grey,
                       decoration: textfieldDecoration(),
                       validator: (value) {
-                        if (value!.isEmpty) {
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(behavior: SnackBarBehavior.floating,content: Text('Enter Name'),backgroundColor: Colors.red,duration: Duration(seconds: 3),));
-                        }else{
-                          return null;
-                        }
+                        
                       },
                     ),
                   ),
@@ -95,13 +92,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       decoration: textfieldDecoration().copyWith(
                         hintText: 'example@gmail.com'
                       ),
-                      validator: (value) {
-                        if (value!.isEmpty || !value.contains('@')) {
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(behavior: SnackBarBehavior.floating,content: Text('Enter valid Email Address'),backgroundColor: Colors.red,duration: Duration(seconds: 3),));
-                        }else{
-                          return null;
-                        }
-                      },
+                      validator: validateEmail
                     ),
                   ),
                   SizedBox(height: 10,),
@@ -140,13 +131,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         contentPadding: EdgeInsets.only(left: 10),
                         filled: true
                       ),
-                      validator: (value) {
-                        if (value!.isEmpty || value.length < 7) {
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(behavior: SnackBarBehavior.floating,content: Text('Password should be at least 7 characters'),backgroundColor: Colors.red,duration: Duration(seconds: 3),));
-                        }else{
-                          return null;
-                        }
-                      },
+                      validator: validatePassword
                     ),
                   ),
                   SizedBox(height: 10,),
@@ -169,13 +154,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       decoration: textfieldDecoration().copyWith(
                         hintText: '09, Unity crescent, off Gasline, Ogun State'
                       ),
-                      validator: (value) {
-                        if (value!.isEmpty || value.length < 7) {
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(behavior: SnackBarBehavior.floating,content: Text('Address should be a least 7 characters'),backgroundColor: Colors.red,duration: Duration(seconds: 3),));
-                        }else{
-                          return null;
-                        }
-                      },
+                      validator: validateAddress
                     ),
                   ),
                   SizedBox(height: 20,),
@@ -184,11 +163,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     height: 50,
                     decoration: BoxDecoration(
                       border: Border.all(width: 1.2,color: Colors.transparent),
-                      color: Colors.black87,
                       borderRadius: BorderRadius.circular(10)
                     ),
                     child: MaterialButton(
-                      onPressed: ()async{
+                      color: Colors.black87,
+                      disabledColor: Colors.grey,
+                      disabledTextColor: Colors.black.withOpacity(.5),
+                      onPressed: isLoading ? null : ()async{
+                        setState(() {isLoading = true;});
                         final isvalid = formKey.currentState!.validate();
                         FocusScope.of(context).unfocus();
                         if (isvalid) {
@@ -200,6 +182,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => BottomNav()), (route) => false);
                           }
                         }
+                        setState(() {isLoading = false;});
                       },
                       child: Text(
                         'SignUp',
@@ -223,8 +206,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   SizedBox(height: 10,),
                   Align(
                     alignment: Alignment.center,
-                    child: InkWell(
-                      onTap: () {
+                    child: TextButton(
+                      onPressed: () {
                         Navigator.push(
                           context, 
                           PageTransition(
@@ -270,4 +253,75 @@ InputDecoration textfieldDecoration() {
       filled: true
     );
   }
+
+//To validate name
+String? validateName(String? formName){
+  if (formName!.isEmpty) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        behavior: SnackBarBehavior.floating,
+        content: Text('Enter Name'),
+        backgroundColor: Colors.red,
+        duration: Duration(seconds: 3),
+        )
+      );
+  }else{
+    return null;
+  }
+  return null;
+}
+
+//To validate email
+  String? validateEmail(String? formEmail){
+    String pattern = r'\w+@\w+\.\w+';
+    RegExp regExp = RegExp(pattern);
+    if (formEmail!.isEmpty || formEmail == null || !regExp.hasMatch(formEmail)) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          behavior: SnackBarBehavior.floating,
+          content: Text('Enter Valid Email Address'),
+          backgroundColor: Colors.red,
+          duration: Duration(seconds: 3),
+          )
+        );   
+    }else{
+      return null;
+    }
+    return null;
+  }
+
+  //To validate password
+  String? validatePassword(String? formPassword){
+    if (formPassword!.isEmpty || formPassword == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          behavior: SnackBarBehavior.floating,
+          content: Text('Enter Password'),
+          backgroundColor: Colors.red,
+          duration: Duration(seconds: 6),
+        )
+      );
+    }else{
+      return null;
+    }
+    return null;
+  }
+
+  //To validate address
+  String? validateAddress(String? formAddress){
+    if (formAddress!.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          behavior: SnackBarBehavior.floating,
+          content: Text('Enter Delivery Address'),
+          backgroundColor: Colors.red,
+          duration: Duration(seconds: 3),
+          )
+        );
+    }else{
+      return null;
+    }
+    return null;
+  }
+
 }

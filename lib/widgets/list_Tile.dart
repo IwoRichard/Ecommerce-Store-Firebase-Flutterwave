@@ -53,8 +53,8 @@ class _UserTileState extends State<UserTile> {
                 actions: [
                   TextButton(
                     onPressed: ()async{
-                      await FirestoreService().updateUserName(widget.nameController!.text);
                       Navigator.pop(context);
+                      await FirestoreService().updateUserName(widget.nameController!.text);
                     }, 
                     child: Text('Save')
                   )
@@ -80,8 +80,8 @@ class _UserTileState extends State<UserTile> {
                 actions: [
                   TextButton(
                     onPressed: ()async{
-                      await FirestoreService().updateUserAddress(widget.addressController!.text);
                       Navigator.pop(context);
+                      await FirestoreService().updateUserAddress(widget.addressController!.text);
                     }, 
                     child: Text('Save')
                   )

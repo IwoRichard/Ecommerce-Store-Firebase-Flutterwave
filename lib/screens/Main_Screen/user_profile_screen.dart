@@ -2,8 +2,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:shop/widgets/list_Tile.dart';
 import '../../services/firebase_auth.dart';
+import '../Auth_Screen/forgot_password_screen.dart';
 import '../Auth_Screen/login_screen.dart';
 
 
@@ -71,9 +73,20 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                   SizedBox(height: 10,),
                   tileTile('Security Settings'),
                   SizedBox(height: 10,),
-                  UserTile(
-                    title: 'Reset Password',
-                    subtitle: '************',
+                  GestureDetector(
+                    onTap: (){
+                      Navigator.push(
+                          context, 
+                          PageTransition(
+                            child: ForgotPasswordScreen(), 
+                            type: PageTransitionType.rightToLeft,
+                            duration: Duration(milliseconds: 300)
+                          ),
+                      );
+                    },
+                    child: UserTile(
+                      title: 'Reset Password',
+                    ),
                   ),
                   SizedBox(height: 10,),
                   tileTile('Others'),
