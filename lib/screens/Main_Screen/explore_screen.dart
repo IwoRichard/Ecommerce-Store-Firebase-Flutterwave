@@ -2,9 +2,6 @@
 
 import 'package:flutter/material.dart';
 
-import '../../services/firebase_auth.dart';
-import '../Auth_Screen/login_screen.dart';
-
 class ExploreScreen extends StatefulWidget {
   const ExploreScreen({super.key});
 
@@ -21,7 +18,15 @@ class _ExploreScreenState extends State<ExploreScreen> {
         elevation: .5,
         title: Text('Explore',style: TextStyle(fontSize: 34,fontWeight: FontWeight.w600,color: Colors.black),),
       ),
-      body: Center(child: Text('Explore'),),
+      body: Padding(
+        padding: const EdgeInsets.all(15),
+        child: Column(
+          children: [
+            Expanded(flex: 1,child: Container(color: Colors.blue,)),
+            Expanded(flex: 2,child: Container(color: Colors.yellow,))
+          ],
+        ),
+      ),
     );
   }
 }

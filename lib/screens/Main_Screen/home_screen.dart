@@ -3,7 +3,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shop/models/chip_model.dart';
+import 'package:shop/models/products_model.dart';
+import 'package:shop/providers/products_provider.dart';
+import 'package:shop/widgets/product_card.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -23,6 +27,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final productProvider = Provider.of<ProductsProvider>(context);
+    List<ProductModel> allProducts = productProvider.getProducts;
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -103,11 +109,28 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             Expanded(
-              child: Text(
-                choiceChips[current].name,
-                style: TextStyle(fontSize: 50),
-              )
-            )
+              child: GridView.count(
+                shrinkWrap: true,
+                crossAxisCount: 2,
+                padding: EdgeInsets.zero,
+                children: List.generate(
+                  allProducts.length < 2
+                    ? allProducts.length
+                    : 1, 
+                  (index){
+                    return ChangeNotifierProvider.value(
+                      value: allProducts[index],
+                      child: ProductCard(),
+                    );
+                }),
+              ),
+            ),
+            // Expanded(
+            //   child: Text(
+            //     choiceChips[current].name,
+            //     style: TextStyle(fontSize: 50),
+            //   )
+            // )
           ],
         ),
       )
