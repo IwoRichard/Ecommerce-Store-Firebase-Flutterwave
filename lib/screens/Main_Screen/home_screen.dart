@@ -3,7 +3,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:shop/models/chip_model.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -14,10 +13,6 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final User? user = FirebaseAuth.instance.currentUser;
-
-  List<CategoryChip> choiceChips = chips;
-
-  int current = 0;
 
   String name = '';
 
@@ -100,7 +95,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                   child: Padding(
-                    padding: const EdgeInsets.only(left: 15,bottom: 25),
+                    padding: const EdgeInsets.only(left: 15,bottom: 20),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.end,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -108,6 +103,10 @@ class _HomeScreenState extends State<HomeScreen> {
                         Text(
                           snapshot.data!.docs[index]['categoryName'],
                           style: TextStyle(color: Colors.white,fontSize: 20,fontWeight: FontWeight.w500),
+                        ),
+                        Text(
+                          '${snapshot.data!.docs[index]['categoryName'].length.toString()} Product',
+                          style: TextStyle(color: Colors.white.withOpacity(.5)),
                         ),
                       ],
                     ),
