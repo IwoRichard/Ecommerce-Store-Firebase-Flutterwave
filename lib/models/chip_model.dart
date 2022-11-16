@@ -12,39 +12,39 @@ class CategoryChip {
 List<CategoryChip> chips = [
   CategoryChip(
     name: 'Shirts', 
-    image: 'assets/shirt.jpg'//Image(image: AssetImage('assets/shirt.jpg'),)
+    image: 'assets/shirt.jpg'
   ),
   CategoryChip(
     name: 'Shorts', 
-    image: 'assets/shorts.jpeg'//Image(image: AssetImage('assets/shorts.jpg'),)
+    image: 'assets/shorts.jpeg'
   ),
   CategoryChip(
     name: 'Cap', 
-    image: 'assets/cap.jpeg'//Image(image: AssetImage('assets/shorts.jpg'),)
+    image: 'assets/cap.jpeg'
   ),
   CategoryChip(
     name: 'Trousers', 
-    image: 'assets/trousers.jpeg'//Image(image: AssetImage('assets/trousers.jpg'),)
+    image: 'assets/trousers.jpeg'
   ),
   CategoryChip(
     name: 'Hoodie', 
-    image: 'assets/hoodie.jpeg'//Image(image: AssetImage('assets/shorts.jpg'),)
+    image: 'assets/hoodie.jpeg'
   ),
   CategoryChip(
     name: 'Watch', 
-    image: 'assets/watch.jpeg'//Image(image: AssetImage('assets/watch.jpg'),)
+    image: 'assets/watch.jpeg'
   ),
   CategoryChip(
     name: 'Shoe', 
-    image: 'assets/shoe.jpeg'//Image(image: AssetImage('assets/shoe.jpg'),)
+    image: 'assets/shoe.jpeg'
   ),
   CategoryChip(
     name: 'Perfume', 
-    image: 'assets/perfume.jpeg'//Image(image: AssetImage('assets/perfume.jpg'),)
+    image: 'assets/perfume.jpeg'
   ),
   CategoryChip(
     name: 'Rings', 
-    image: 'assets/ring.jpeg'//Image(image: AssetImage('assets/ring.jpg'),)
+    image: 'assets/ring.jpeg'
   ),
 ];
 

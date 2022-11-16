@@ -27,8 +27,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final productProvider = Provider.of<ProductsProvider>(context);
-    List<ProductModel> allProducts = productProvider.getProducts;
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -109,28 +107,11 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             Expanded(
-              child: GridView.count(
-                shrinkWrap: true,
-                crossAxisCount: 2,
-                padding: EdgeInsets.zero,
-                children: List.generate(
-                  allProducts.length < 2
-                    ? allProducts.length
-                    : 1, 
-                  (index){
-                    return ChangeNotifierProvider.value(
-                      value: allProducts[index],
-                      child: ProductCard(),
-                    );
-                }),
-              ),
-            ),
-            // Expanded(
-            //   child: Text(
-            //     choiceChips[current].name,
-            //     style: TextStyle(fontSize: 50),
-            //   )
-            // )
+              child: Text(
+                choiceChips[current].name,
+                style: TextStyle(fontSize: 50),
+              )
+            )
           ],
         ),
       )
