@@ -3,11 +3,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:shop/models/chip_model.dart';
-import 'package:shop/models/products_model.dart';
-import 'package:shop/providers/products_provider.dart';
-import 'package:shop/widgets/product_card.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -72,53 +68,61 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: Column(
-          children: [
-            SizedBox(
-              height: 60,
-              width: double.infinity,
-              child: ListView.builder(
-                physics: BouncingScrollPhysics(),
-                itemCount: choiceChips.length,
-                scrollDirection: Axis.horizontal,
-                itemBuilder: (context,index){
-                  return GestureDetector(
-                    onTap: (){
-                      setState(() {
-                        current = index;
-                      });
-                    },
-                    child: Container(
-                      margin: EdgeInsets.only(right: 5),
-                      child: Chip(
-                        backgroundColor: current == index ? Colors.black87 : Colors.grey.withOpacity(.5),
-                        avatar: CircleAvatar(
-                          foregroundImage: AssetImage(choiceChips[index].image),
-                          backgroundColor: Colors.white,),
-                        label: Text(
-                          choiceChips[index].name,
-                          style: TextStyle(color: current == index ? Colors.white : Colors.black.withOpacity(.5)),
-                        )
+        padding: const EdgeInsets.symmetric(horizontal: 15,vertical: 15),
+        child: StreamBuilder(
+          stream: FirebaseFirestore.instance.collection('categories').snapshots(),
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            return GridView.builder(
+              physics: BouncingScrollPhysics(),
+              shrinkWrap: true,
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                mainAxisSpacing: 10,
+                crossAxisSpacing: 10,
+                childAspectRatio: .7
+              ),
+              itemCount: snapshot.data!.docs.length,
+              itemBuilder: (BuildContext context, int index) {
+                return Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    image: DecorationImage(image: NetworkImage(snapshot.data!.docs[index]['categoryImage']),fit: BoxFit.cover),
+                  ),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      gradient: LinearGradient(
+                        begin: Alignment.bottomCenter,
+                        colors: [
+                          Colors.black.withOpacity(.8),
+                          Colors.black.withOpacity(.3),
+                        ]
                       ),
                     ),
-                  );
-                }
-              ),
-            ),
-            Expanded(
-              child: Text(
-                choiceChips[current].name,
-                style: TextStyle(fontSize: 50),
-              )
-            )
-          ],
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 15,bottom: 25),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          snapshot.data!.docs[index]['categoryName'],
+                          style: TextStyle(color: Colors.white,fontSize: 20,fontWeight: FontWeight.w500),
+                        ),
+                      ],
+                    ),
+                  ),
+                  ),
+                );
+              },
+            );
+          },
         ),
       )
     );
   }
 
-StreamBuilder<Null> displayName() {
+StreamBuilder<void> displayName() {
   return StreamBuilder(
       stream: FirebaseFirestore.instance.collection('userInfo').doc(user?.uid).get().then((snapshot) async {
         if (snapshot.exists) {

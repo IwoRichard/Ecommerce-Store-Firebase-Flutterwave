@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors
-
 class CategoryChip {
   String name;
   String image;
@@ -11,11 +9,11 @@ class CategoryChip {
 
 List<CategoryChip> chips = [
   CategoryChip(
-    name: 'Shirts', 
+    name: 'Shirt', 
     image: 'assets/shirt.jpg'
   ),
   CategoryChip(
-    name: 'Shorts', 
+    name: 'Short', 
     image: 'assets/shorts.jpeg'
   ),
   CategoryChip(
@@ -23,11 +21,15 @@ List<CategoryChip> chips = [
     image: 'assets/cap.jpeg'
   ),
   CategoryChip(
-    name: 'Trousers', 
+    name: 'Trouser', 
     image: 'assets/trousers.jpeg'
   ),
   CategoryChip(
     name: 'Hoodie', 
+    image: 'assets/hoodie.jpeg'
+  ),
+  CategoryChip(
+    name: 'Jackets', 
     image: 'assets/hoodie.jpeg'
   ),
   CategoryChip(
@@ -43,7 +45,7 @@ List<CategoryChip> chips = [
     image: 'assets/perfume.jpeg'
   ),
   CategoryChip(
-    name: 'Rings', 
+    name: 'Ring', 
     image: 'assets/ring.jpeg'
   ),
 ];
