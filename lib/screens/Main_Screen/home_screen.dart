@@ -85,7 +85,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 return GestureDetector(
                   onTap: () {
                     Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-                      return CategoryScreen(collection: snapshot.data.docs[index]['categoryName'], id: snapshot.data.docs[index].id,);
+                      return CategoryScreen(
+                        collection: snapshot.data.docs[index]['categoryName'], 
+                        id: snapshot.data.docs[index].id,
+                      );
                     }));
                   },
                   child: Container(

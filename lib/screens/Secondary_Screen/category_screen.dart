@@ -69,6 +69,7 @@ class _CategoryState extends State<CategoryScreen> {
                 return GestureDetector(
                   onTap: () {
                     Navigator.of(context).push(MaterialPageRoute(builder: (context)=> ProductDetails(
+                      productId: snapshot.data.docs[index]['productId'],
                       productName: snapshot.data.docs[index]['productName'],
                       productImage: snapshot.data.docs[index]['productImage'],
                       productPrice: snapshot.data.docs[index]['productPrice'],
