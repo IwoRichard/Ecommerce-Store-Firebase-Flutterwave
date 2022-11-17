@@ -19,7 +19,7 @@ class _CartScreenState extends State<CartScreen> {
         title: Text('My Cart',style: TextStyle(fontSize: 34,fontWeight: FontWeight.w600,color: Colors.black),),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(15),
         child: Column(
           children: [
             Expanded(
@@ -29,15 +29,45 @@ class _CartScreenState extends State<CartScreen> {
                 },
                 itemCount: 2,
                 itemBuilder: (context, index) {
-                  return ListTile(
-                    leading: Container(width: 100,color: Colors.blue,),
-                    title: Text('Nike Air Jordan 5'),
-                    subtitle: Text('\$500'),
-                    trailing: IconButton(
-                      onPressed: (){}, 
-                      icon: Icon(Icons.delete_rounded,color: Colors.redAccent,)
-                    ),
-                  );
+                  return Row(
+                      children: [
+                        Container(
+                          height: 80,
+                          width: 80,
+                          decoration: BoxDecoration(
+                            borderRadius:  BorderRadius.circular(10),
+                            color: Colors.blue
+                          ),
+                        ),
+                        const SizedBox(width: 15,),
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 3,left: 3),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Nike Everyday Shoe",
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                const SizedBox(height: 3,),
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Container(child: Text('-'),),
+                                    const SizedBox(width: 10,),
+                                    Container(child: Text('+'),),
+                                    Spacer(),
+                                    Text('455')
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
                 }
               )
             ),

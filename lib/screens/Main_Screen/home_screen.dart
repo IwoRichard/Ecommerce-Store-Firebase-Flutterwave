@@ -3,6 +3,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:shop/screens/Secondary_Screen/category_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -67,6 +68,9 @@ class _HomeScreenState extends State<HomeScreen> {
         child: StreamBuilder(
           stream: FirebaseFirestore.instance.collection('categories').snapshots(),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
+            if (!snapshot.hasData) {
+              return Center(child: CircularProgressIndicator(),);
+            }
             return GridView.builder(
               physics: BouncingScrollPhysics(),
               shrinkWrap: true,
@@ -76,41 +80,48 @@ class _HomeScreenState extends State<HomeScreen> {
                 crossAxisSpacing: 10,
                 childAspectRatio: .7
               ),
-              itemCount: snapshot.data!.docs.length,
+              itemCount: snapshot.data.docs.length,
               itemBuilder: (BuildContext context, int index) {
-                return Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    image: DecorationImage(image: NetworkImage(snapshot.data!.docs[index]['categoryImage']),fit: BoxFit.cover),
-                  ),
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+                      return CategoryScreen(collection: snapshot.data.docs[index]['categoryName'], id: snapshot.data.docs[index].id,);
+                    }));
+                  },
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
-                      gradient: LinearGradient(
-                        begin: Alignment.bottomCenter,
-                        colors: [
-                          Colors.black.withOpacity(.8),
-                          Colors.black.withOpacity(.3),
-                        ]
+                      image: DecorationImage(image: NetworkImage(snapshot.data.docs[index]['categoryImage']),fit: BoxFit.cover),
+                    ),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        gradient: LinearGradient(
+                          begin: Alignment.bottomCenter,
+                          colors: [
+                            Colors.black.withOpacity(.8),
+                            Colors.black.withOpacity(.3),
+                          ]
+                        ),
+                      ),
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 15,bottom: 20),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            snapshot.data.docs[index]['categoryName'],
+                            style: TextStyle(color: Colors.white,fontSize: 20,fontWeight: FontWeight.w500),
+                          ),
+                          Text(
+                            '${snapshot.data.docs[index]['categoryName'].length.toString()} Product',
+                            style: TextStyle(color: Colors.white.withOpacity(.5)),
+                          ),
+                        ],
                       ),
                     ),
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 15,bottom: 20),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          snapshot.data!.docs[index]['categoryName'],
-                          style: TextStyle(color: Colors.white,fontSize: 20,fontWeight: FontWeight.w500),
-                        ),
-                        Text(
-                          '${snapshot.data!.docs[index]['categoryName'].length.toString()} Product',
-                          style: TextStyle(color: Colors.white.withOpacity(.5)),
-                        ),
-                      ],
                     ),
-                  ),
                   ),
                 );
               },
