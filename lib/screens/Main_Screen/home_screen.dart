@@ -71,6 +71,7 @@ class _HomeScreenState extends State<HomeScreen> {
             if (!snapshot.hasData) {
               return Center(child: CircularProgressIndicator(),);
             }
+            //var value = FirebaseFirestore.instance.collection('categoryName').get().then((value) => value.docs.length.toString());
             return GridView.builder(
               physics: BouncingScrollPhysics(),
               shrinkWrap: true,
