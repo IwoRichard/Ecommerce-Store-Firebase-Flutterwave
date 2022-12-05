@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:shop/screens/Main_Screen/cart_screen.dart';
-import 'package:shop/screens/Main_Screen/explore_screen.dart';
 import 'package:shop/screens/Main_Screen/home_screen.dart';
 import 'package:shop/screens/Main_Screen/user_profile_screen.dart';
 
@@ -17,7 +16,6 @@ class BottomNav extends StatefulWidget {
 class _BottomNavState extends State<BottomNav> {
   List pages = [
     const HomeScreen(),
-    const ExploreScreen(),
     const CartScreen(),
     const UserProfileScreen()
   ];
@@ -35,7 +33,6 @@ class _BottomNavState extends State<BottomNav> {
         index: currentIndex,
         children: [
           const HomeScreen(),
-          const ExploreScreen(),
           const CartScreen(),
           const UserProfileScreen()
         ]
@@ -56,7 +53,6 @@ class _BottomNavState extends State<BottomNav> {
         elevation: 5,
         items: [
           BottomNavigationBarItem(label: 'Home',icon: Icon(Icons.home_rounded)),
-          BottomNavigationBarItem(label: 'Explore',icon: Icon(Icons.explore)),
           BottomNavigationBarItem(label: 'Cart',icon: Icon(Icons.shopping_bag_rounded)),
           BottomNavigationBarItem(label: 'Profile',icon: Icon(Icons.person)),
         ],
