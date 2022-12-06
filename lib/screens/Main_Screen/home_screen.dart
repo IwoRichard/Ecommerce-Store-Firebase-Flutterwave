@@ -71,7 +71,6 @@ class _HomeScreenState extends State<HomeScreen> {
             if (!snapshot.hasData) {
               return Center(child: CircularProgressIndicator(),);
             }
-            //var value = FirebaseFirestore.instance.collection('categoryName').get().then((value) => value.docs.length.toString());
             return GridView.builder(
               physics: BouncingScrollPhysics(),
               shrinkWrap: true,
@@ -118,10 +117,6 @@ class _HomeScreenState extends State<HomeScreen> {
                             snapshot.data.docs[index]['categoryName'],
                             style: TextStyle(color: Colors.white,fontSize: 20,fontWeight: FontWeight.w500),
                           ),
-                          Text(
-                            '${snapshot.data.docs[index]['categoryName'].length.toString()} Product',
-                            style: TextStyle(color: Colors.white.withOpacity(.5)),
-                          ),
                         ],
                       ),
                     ),
@@ -135,7 +130,6 @@ class _HomeScreenState extends State<HomeScreen> {
       )
     );
   }
-
 StreamBuilder<void> displayName() {
   return StreamBuilder(
       stream: FirebaseFirestore.instance.collection('userInfo').doc(user?.uid).get().then((snapshot) async {

@@ -22,6 +22,7 @@ class ProductDetails extends StatefulWidget {
 
 class _ProductDetailsState extends State<ProductDetails> {
   bool isLoading = false;
+  int quantity = 1;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,7 +53,7 @@ class _ProductDetailsState extends State<ProductDetails> {
             const SizedBox(height: 15,),
             Text(widget.productName,style: TextStyle(fontSize: 20,fontWeight: FontWeight.w500),),
             Text(
-              '\$${widget.productPrice}',
+              '\$${widget.productPrice*quantity}',
               style: TextStyle(fontSize: 30,fontWeight: FontWeight.w700),
             ),
             const SizedBox(height: 15,),
@@ -67,13 +68,17 @@ class _ProductDetailsState extends State<ProductDetails> {
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: IconButton(
-                    onPressed: (){}, 
+                    onPressed: (){
+                      setState(() {
+                        quantity > 1 ? quantity-- : null;  
+                      });
+                    }, 
                     icon: Icon(Icons.remove)
                   )
                 ),
                 SizedBox(width: 15,),
                 Text(
-                  '1',
+                  '$quantity',
                   style: TextStyle(fontSize: 18),
                 ),
                 SizedBox(width: 15,),
@@ -85,7 +90,11 @@ class _ProductDetailsState extends State<ProductDetails> {
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: IconButton(
-                    onPressed: (){}, 
+                    onPressed: (){
+                      setState(() {
+                        quantity++;
+                      });
+                    }, 
                     icon: Icon(Icons.add)
                   )
                 ),
@@ -111,9 +120,9 @@ class _ProductDetailsState extends State<ProductDetails> {
                           .set({
                             'productName': widget.productName,
                             'productImage': widget.productImage,
-                            'productPrice': widget.productPrice,
+                            'productPrice': widget.productPrice*quantity,
                             'productId': widget.productId,
-                            'productQuantity': 1
+                            'productQuantity': quantity
                           });
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Item Added to Cart'),backgroundColor: Colors.green,));
                         setState(() {isLoading = false;});

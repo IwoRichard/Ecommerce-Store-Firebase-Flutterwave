@@ -6,23 +6,29 @@ import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 
 import '../../widgets/cart_product_card.dart';
-import '../Secondary_Screen/checkout_screen.dart';
+import '../Main_Screen/cart_screen.dart';
 
-class CartScreen extends StatefulWidget {
-  const CartScreen({super.key});
+class CheckOutScreen extends StatefulWidget {
+  const CheckOutScreen({super.key});
 
   @override
-  State<CartScreen> createState() => _CartScreenState();
+  State<CheckOutScreen> createState() => _CheckOutScreenState();
 }
 
-class _CartScreenState extends State<CartScreen> {
+class _CheckOutScreenState extends State<CheckOutScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
         backgroundColor: Colors.white,
+        leading: IconButton(
+          onPressed: (){
+              Navigator.pop(context);
+          }, 
+          icon: Icon(Icons.arrow_back_ios_new_rounded,color: Colors.black,)
+        ),
         elevation: .5,
-        title: Text('My Cart',style: TextStyle(fontSize: 34,fontWeight: FontWeight.w600,color: Colors.black),),
+        title: Text('CheckOut',style: TextStyle(fontSize: 34,fontWeight: FontWeight.w600,color: Colors.black),),
       ),
       body: StreamBuilder(
         stream: FirebaseFirestore.instance
@@ -59,6 +65,19 @@ class _CartScreenState extends State<CartScreen> {
                   }
                 )
               ),
+              ListTile(
+                leading: Text('Sub Total'),
+                trailing: Text('\$500'),
+              ),
+              ListTile(
+                leading: Text('Shipping'),
+                trailing: Text('\$500'),
+              ),
+              Divider(),
+              ListTile(
+                leading: Text('Total'),
+                trailing: Text('\$500'),
+              ),
               Container(
                 width: double.infinity,
                 height: 50,
@@ -70,14 +89,9 @@ class _CartScreenState extends State<CartScreen> {
                   color: Colors.black87,
                   disabledColor: Colors.grey.withOpacity(.5),
                   disabledTextColor: Colors.black.withOpacity(.5),
-                  onPressed:(){
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context)=> CheckOutScreen())
-                    );
-                  },
+                  onPressed:(){},
                   child: Text(
-                    'CheckOut',
+                    'Purchase',
                     style: TextStyle(fontWeight: FontWeight.w600, fontSize: 17,color:Colors.white)
                   ),
                 )

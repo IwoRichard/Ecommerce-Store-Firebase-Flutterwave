@@ -72,7 +72,7 @@ class _CategoryState extends State<CategoryScreen> {
                       productId: snapshot.data.docs[index]['productId'],
                       productName: snapshot.data.docs[index]['productName'],
                       productImage: snapshot.data.docs[index]['productImage'],
-                      productPrice: snapshot.data.docs[index]['productPrice'],
+                      productPrice: snapshot.data.docs[index]['productPrice'], 
                     )));
                   },
                   child: Column(
