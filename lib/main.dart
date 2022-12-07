@@ -17,17 +17,24 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      home: StreamBuilder(
-        stream: FirebaseAuthService().firebaseAuth.authStateChanges(),
-        builder: (context,AsyncSnapshot snapshot){
-          if (snapshot.hasData) {
-            return BottomNav();
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => CartProvider(),
+        )
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Flutter Demo',
+        home: StreamBuilder(
+          stream: FirebaseAuthService().firebaseAuth.authStateChanges(),
+          builder: (context,AsyncSnapshot snapshot){
+            if (snapshot.hasData) {
+              return BottomNav();
+            }
+            return DefaultHome();
           }
-          return DefaultHome();
-        }
+        ),
       ),
     );
   }

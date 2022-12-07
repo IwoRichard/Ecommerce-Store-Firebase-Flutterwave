@@ -1,8 +1,8 @@
 // ignore_for_file: prefer_const_constructors,  prefer_const_literals_to_create_immutables
 
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../../providers/cart_provider.dart';
 import '../../widgets/cart_product_card.dart';
 
 class CheckOutScreen extends StatefulWidget {
@@ -13,12 +13,14 @@ class CheckOutScreen extends StatefulWidget {
 }
 
 class _CheckOutScreenState extends State<CheckOutScreen> {
-final User? user = FirebaseAuth.instance.currentUser;
-  void emptyCart(){
-    FirebaseFirestore.instance.collection('cart').doc(user!.uid).collection('userCart').doc().delete();
-  }
   @override
   Widget build(BuildContext context) {
+    CartProvider cartProvider = Provider.of<CartProvider>(context);
+    cartProvider.cartData();
+    double subTotal = cartProvider.subTotal();
+    double shipping = 10.0;
+    double total = subTotal + subTotal;
+    //var cs = cartProvider.cartModel!.productQuantity;
     return Scaffold(
         appBar: AppBar(
         backgroundColor: Colors.white,
@@ -31,20 +33,9 @@ final User? user = FirebaseAuth.instance.currentUser;
         elevation: .5,
         title: Text('CheckOut',style: TextStyle(fontSize: 34,fontWeight: FontWeight.w600,color: Colors.black),),
       ),
-      body: StreamBuilder(
-        stream: FirebaseFirestore.instance
-          .collection('cart')
-          .doc(FirebaseAuth.instance.currentUser!.uid)
-          .collection('userCart')
-          .snapshots(),
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
-          if (!snapshot.hasData) {
-            return Center(child: CircularProgressIndicator(),);
-          }
-          return snapshot.data!.docs.isEmpty? 
-          Center(
-            child: Text('Nothing in Cart'),
-          ): Padding(
+      body: cartProvider.getCartList.isEmpty ?
+      Center(child: Text('Cart is Empty'),) :
+      Padding(
           padding: const EdgeInsets.all(15),
           child: Column(
             children: [
@@ -53,31 +44,31 @@ final User? user = FirebaseAuth.instance.currentUser;
                   separatorBuilder: (context, index) {
                     return Divider();
                   },
-                  itemCount: snapshot.data.docs.length,
+                  itemCount: cartProvider.getCartList.length,
                   itemBuilder: (context, index) {
-                    var data = snapshot.data!.docs[index];
+                    var data = cartProvider.cartList[index];
                     return CartCard(
-                      productId: data['productId'], 
-                      productImage: data['productImage'], 
-                      productName: data['productName'], 
-                      productQuantity: data['productQuantity'], 
-                      productPrice: data['productPrice'],
+                      productId: data.productId, 
+                      productImage: data.productImage, 
+                      productName: data.productName, 
+                      productQuantity: data.productQuantity, 
+                      productPrice: data.productPrice,
                     );
                   }
                 )
               ),
               ListTile(
                 leading: Text('Sub Total'),
-                trailing: Text('\$500'),
+                trailing: Text('\$$subTotal'),
               ),
               ListTile(
                 leading: Text('Shipping'),
-                trailing: Text('\$500'),
+                trailing: Text('\$$shipping'),
               ),
               Divider(),
               ListTile(
                 leading: Text('Total'),
-                trailing: Text('\$500'),
+                trailing: Text('\$$total'),
               ),
               Container(
                 width: double.infinity,
@@ -91,7 +82,6 @@ final User? user = FirebaseAuth.instance.currentUser;
                   disabledColor: Colors.grey.withOpacity(.5),
                   disabledTextColor: Colors.black.withOpacity(.5),
                   onPressed:(){
-                    emptyCart();
                     Navigator.pop(context);
                   },
                   child: Text(
@@ -102,9 +92,7 @@ final User? user = FirebaseAuth.instance.currentUser;
               ),
             ],
           )
-        );
-        }
-      )
+        ),
     );
   }
 }
