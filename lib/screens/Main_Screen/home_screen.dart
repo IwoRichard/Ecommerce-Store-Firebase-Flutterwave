@@ -64,7 +64,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15,vertical: 15),
+        padding: const EdgeInsets.symmetric(horizontal: 15,vertical: 5),
         child: StreamBuilder(
           stream: FirebaseFirestore.instance.collection('categories').snapshots(),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -130,6 +130,7 @@ class _HomeScreenState extends State<HomeScreen> {
       )
     );
   }
+  //To display the current logged in username in homepage
 StreamBuilder<void> displayName() {
   return StreamBuilder(
       stream: FirebaseFirestore.instance.collection('userInfo').doc(user?.uid).get().then((snapshot) async {

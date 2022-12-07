@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 class FirestoreService{
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
+  //To get/store user informations
   Future UserInfo(String email, String name, String address)async{
     try {
       final User? user = FirebaseAuth.instance.currentUser;
@@ -22,19 +23,7 @@ class FirestoreService{
     }
   }
 
-  Future updateUserInfo(String name, String address)async{
-    try {
-      final User? user = FirebaseAuth.instance.currentUser;
-      final _uid = user!.uid;
-      await firestore.collection('userInfo').doc(_uid).update({
-        "name":name,
-        "address": address,
-      });
-    } catch (e) {
-      print(e);
-    }
-  }
-
+  //To update user address
     Future updateUserAddress(String address)async{
     try {
       final User? user = FirebaseAuth.instance.currentUser;
@@ -47,6 +36,7 @@ class FirestoreService{
     }
   }
 
+  //To update username
     Future updateUserName(String name)async{
     try {
       final User? user = FirebaseAuth.instance.currentUser;
@@ -57,7 +47,5 @@ class FirestoreService{
     } catch (e) {
       print(e);
     }
-  }
-
-  
+  } 
 }

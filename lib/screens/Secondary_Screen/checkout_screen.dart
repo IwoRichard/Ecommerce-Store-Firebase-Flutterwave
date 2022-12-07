@@ -3,10 +3,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:page_transition/page_transition.dart';
-
 import '../../widgets/cart_product_card.dart';
-import '../Main_Screen/cart_screen.dart';
 
 class CheckOutScreen extends StatefulWidget {
   const CheckOutScreen({super.key});
@@ -16,6 +13,10 @@ class CheckOutScreen extends StatefulWidget {
 }
 
 class _CheckOutScreenState extends State<CheckOutScreen> {
+final User? user = FirebaseAuth.instance.currentUser;
+  void emptyCart(){
+    FirebaseFirestore.instance.collection('cart').doc(user!.uid).collection('userCart').doc().delete();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,7 +24,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
         backgroundColor: Colors.white,
         leading: IconButton(
           onPressed: (){
-              Navigator.pop(context);
+            Navigator.pop(context);
           }, 
           icon: Icon(Icons.arrow_back_ios_new_rounded,color: Colors.black,)
         ),
@@ -89,7 +90,10 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                   color: Colors.black87,
                   disabledColor: Colors.grey.withOpacity(.5),
                   disabledTextColor: Colors.black.withOpacity(.5),
-                  onPressed:(){},
+                  onPressed:(){
+                    emptyCart();
+                    Navigator.pop(context);
+                  },
                   child: Text(
                     'Purchase',
                     style: TextStyle(fontWeight: FontWeight.w600, fontSize: 17,color:Colors.white)

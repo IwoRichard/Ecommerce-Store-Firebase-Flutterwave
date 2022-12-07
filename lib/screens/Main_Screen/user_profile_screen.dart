@@ -92,6 +92,9 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                   tileTile('Others'),
                   SizedBox(height: 10,),
                   UserTile(
+                    title: 'My Orders',
+                  ),
+                  UserTile(
                     title: 'Notification',
                   ),
                   UserTile(

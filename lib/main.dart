@@ -1,6 +1,8 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shop/providers/cart_provider.dart';
 import 'package:shop/screens/Auth_Screen/default_home_screen.dart';
 import 'package:shop/services/firebase_auth.dart';
 import 'package:shop/widgets/bottom_nav.dart';
