@@ -1,5 +1,6 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, use_build_context_synchronously, avoid_print
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
@@ -10,6 +11,8 @@ class ForgotPasswordScreen extends StatefulWidget {
 }
 
 class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
+  
+  bool isLoading = false;
   TextEditingController emailController = TextEditingController();
   @override
   Widget build(BuildContext context) {
@@ -73,14 +76,29 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                 height: 50,
                 decoration: BoxDecoration(
                   border: Border.all(width: 1.2,color: Colors.transparent),
-                  color: Colors.black87,
                   borderRadius: BorderRadius.circular(10)
                 ),
                 child: MaterialButton(
-                  onPressed: (){
+                  color: Colors.black87,
+                  disabledColor: Colors.grey.withOpacity(.5),
+                  disabledTextColor: Colors.black.withOpacity(.5),
+                  onPressed: isLoading ? null : ()async{
+                    setState(() {isLoading = true;});
                     if (emailController.text.isEmpty || !emailController.text.contains('@')) {
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(behavior: SnackBarBehavior.floating,content: Text('Enter Valid Email Address'),backgroundColor: Colors.red,duration: Duration(seconds: 3),));
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          behavior: SnackBarBehavior.floating,
+                          content: Text('Enter Valid Email Address'),
+                          backgroundColor: Colors.red,
+                          duration: Duration(seconds: 3),
+                        )
+                      );
+                    }else{
+                      await resetPassword();
                     }
+                    setState(() {
+                      isLoading = false;
+                    });
                   },
                   child: Text(
                     'Submit',
@@ -93,5 +111,31 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
         ),
       ),
     );
+  }
+  //Rest password function
+  Future resetPassword()async{
+    try {
+      await FirebaseAuth.instance
+        .sendPasswordResetEmail(email: emailController.text.trim());
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          behavior: SnackBarBehavior.floating,
+          content: Text('Password Reset Email Sent'),
+          backgroundColor: Colors.green,
+          duration: Duration(seconds: 3),
+        )
+      );
+    } on FirebaseAuthException catch (e) {
+      print(e);
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        behavior: SnackBarBehavior.floating,
+        content: Text(e.message.toString()),
+        backgroundColor: Colors.red,
+        duration: Duration(seconds: 3),
+        )
+      );
+
+    }
   }
 }

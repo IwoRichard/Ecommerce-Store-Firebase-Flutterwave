@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/button_list.dart';
 import 'package:flutter_signin_button/button_view.dart';
 import 'package:page_transition/page_transition.dart';
-import 'package:shop/services/firestore_database.dart';
+import 'package:shop/services/firestore_user_database.dart';
 import '../../services/firebase_auth.dart';
 import '../../widgets/bottom_nav.dart';
 import 'login_screen.dart';
@@ -67,9 +67,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       keyboardType: TextInputType.name,
                       cursorColor: Colors.grey,
                       decoration: textfieldDecoration(),
-                      validator: (value) {
-                        
-                      },
+                      validator: validateName,
                     ),
                   ),
                   SizedBox(height: 10,),

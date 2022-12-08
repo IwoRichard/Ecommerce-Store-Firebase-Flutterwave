@@ -1,5 +1,7 @@
-// ignore_for_file: prefer_const_constructors,  prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors,  prefer_const_literals_to_create_immutables, import_of_legacy_library_into_null_safe
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../providers/cart_provider.dart';
@@ -17,10 +19,27 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
   Widget build(BuildContext context) {
     CartProvider cartProvider = Provider.of<CartProvider>(context);
     cartProvider.cartData();
+
+    //Calculation of SubTotal, Shipping and Total
     double subTotal = cartProvider.subTotal();
+    String y = subTotal.toStringAsFixed(2);
     double shipping = 10.0;
-    double total = subTotal + subTotal;
-    //var cs = cartProvider.cartModel!.productQuantity;
+    double total = subTotal + shipping;
+    String x = total.toStringAsFixed(2);
+
+    //Function to clear cart after successful purchase
+    void clearCart()async{
+      var snapshots = await FirebaseFirestore.instance
+      .collection('cart')
+      .doc(FirebaseAuth.instance.currentUser!.uid)
+      .collection('userCart')
+      .get();
+
+      for(var doc in snapshots.docs){
+        await doc.reference.delete();
+      }
+    }
+
     return Scaffold(
         appBar: AppBar(
         backgroundColor: Colors.white,
@@ -59,7 +78,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
               ),
               ListTile(
                 leading: Text('Sub Total'),
-                trailing: Text('\$$subTotal'),
+                trailing: Text('\$$y'),
               ),
               ListTile(
                 leading: Text('Shipping'),
@@ -68,7 +87,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
               Divider(),
               ListTile(
                 leading: Text('Total'),
-                trailing: Text('\$$total'),
+                trailing: Text('\$$x'),
               ),
               Container(
                 width: double.infinity,
@@ -82,6 +101,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                   disabledColor: Colors.grey.withOpacity(.5),
                   disabledTextColor: Colors.black.withOpacity(.5),
                   onPressed:(){
+                    clearCart();
                     Navigator.pop(context);
                   },
                   child: Text(

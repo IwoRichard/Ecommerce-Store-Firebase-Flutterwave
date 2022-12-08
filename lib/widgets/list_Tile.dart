@@ -2,7 +2,7 @@
 // ignore_for_file: prefer_const_constructors, use_build_context_synchronously, must_be_immutable
 
 import 'package:flutter/material.dart';
-import '../services/firestore_database.dart';
+import '../services/firestore_user_database.dart';
 
 class UserTile extends StatefulWidget {
   String title;

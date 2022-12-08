@@ -37,6 +37,7 @@ class _CategoryState extends State<CategoryScreen> {
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15),
             child: MasonryGridView.count(
+              physics: BouncingScrollPhysics(),
               crossAxisCount: 2,
               mainAxisSpacing: 10,
               crossAxisSpacing: 10,
