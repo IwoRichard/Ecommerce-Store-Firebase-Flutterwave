@@ -27,30 +27,6 @@ class _CategoryState extends State<CategoryScreen> {
         backgroundColor: Colors.white,
         elevation: 0,
         leading: IconButton(onPressed: (){Navigator.pop(context);}, icon: Icon(Icons.arrow_back_ios_new_rounded,color: Colors.black,)),
-        title: Container(
-          height: 40,
-          decoration: BoxDecoration(
-            color: Colors.grey.withOpacity(.05),
-            borderRadius: BorderRadius.circular(5),
-          ),
-          child: TextFormField(
-            cursorColor: Colors.grey,
-            decoration: InputDecoration(
-              hintText: 'Search, shoes, watch . . .',
-              hintStyle: Theme.of(context).textTheme.headline2?.copyWith(fontSize: 15,color: Colors.grey),
-              prefixIcon: IconButton(
-                onPressed: (){}, 
-                icon: Icon(Icons.search_rounded,color: Colors.grey,)
-              ),
-              border: OutlineInputBorder(
-                borderSide: BorderSide.none,
-              ),
-              contentPadding: EdgeInsets.zero,
-              filled: true
-            ),
-            onFieldSubmitted: (value){},
-          ),
-        ) 
       ),
       body: FutureBuilder(
         future: FirebaseFirestore.instance.collection('categories').doc(widget.id).collection(widget.collection).get(),

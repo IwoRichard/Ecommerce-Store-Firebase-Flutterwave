@@ -24,6 +24,8 @@ class CartCard extends StatefulWidget {
 
 class _CartCardState extends State<CartCard> {
   int quantity = 1;
+
+  //Function to update the quantity if changed from the cart page
   void quantityFunc(){
     FirebaseFirestore.instance
       .collection('cart')
@@ -35,6 +37,7 @@ class _CartCardState extends State<CartCard> {
       });
   }
 
+  //Function to delete a particular product from cart
   void productDelete(){
     FirebaseFirestore.instance
       .collection('cart')

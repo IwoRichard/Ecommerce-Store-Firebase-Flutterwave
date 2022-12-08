@@ -32,36 +32,6 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           SizedBox(width: 15,)
         ],
-        bottom: PreferredSize(
-          preferredSize: Size.fromHeight(55),
-          child: Padding(
-            padding: EdgeInsets.only(left: 15,right: 15,bottom: 5),
-            child: Container(
-              height: 40,
-              decoration: BoxDecoration(
-                color: Colors.grey.withOpacity(.05),
-                borderRadius: BorderRadius.circular(5),
-              ),
-              child: TextFormField(
-                cursorColor: Colors.grey,
-                decoration: InputDecoration(
-                  hintText: 'Search, shoes, watch . . .',
-                  hintStyle: Theme.of(context).textTheme.headline2?.copyWith(fontSize: 15,color: Colors.grey),
-                  prefixIcon: IconButton(
-                    onPressed: (){}, 
-                    icon: Icon(Icons.search_rounded,color: Colors.grey,)
-                  ),
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide.none,
-                  ),
-                  contentPadding: EdgeInsets.zero,
-                  filled: true
-                ),
-                onFieldSubmitted: (value){},
-              ),
-            ),
-          ) 
-        ),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15,vertical: 5),
