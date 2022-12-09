@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors,  prefer_const_literals_to_create_immutables, import_of_legacy_library_into_null_safe, avoid_print, unnecessary_null_comparison, use_build_context_synchronously
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +15,7 @@ class CheckOutScreen extends StatefulWidget {
 }
 
 class _CheckOutScreenState extends State<CheckOutScreen> {
+  bool isLoading = false;
   @override
   Widget build(BuildContext context) {
     CartProvider cartProvider = Provider.of<CartProvider>(context);
@@ -24,7 +23,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
 
     //Calculation of SubTotal, Shipping and Total
     double subTotal = cartProvider.subTotal();
-    String y = subTotal.toStringAsFixed(2);
+    String SubTotal = subTotal.toStringAsFixed(2);
     double shipping = 10.0;
     double total = subTotal + shipping;
     String Total = total.toStringAsFixed(2);
@@ -36,13 +35,15 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
           onPressed: (){
             Navigator.pop(context);
           }, 
-          icon: Icon(Icons.arrow_back_ios_new_rounded,color: Colors.black,)
+          icon: const Icon(
+            Icons.arrow_back_ios_new_rounded,
+            color: Colors.black,)
         ),
         elevation: .5,
-        title: Text('CheckOut',style: TextStyle(fontSize: 34,fontWeight: FontWeight.w600,color: Colors.black),),
+        title: const Text('CheckOut',style: TextStyle(fontSize: 34,fontWeight: FontWeight.w600,color: Colors.black),),
       ),
       body: cartProvider.getCartList.isEmpty ?
-      Center(child: Text('Cart is Empty'),) :
+      const Center(child: Text('Cart is Empty'),) :
       Padding(
           padding: const EdgeInsets.all(15),
           child: Column(
@@ -50,7 +51,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
               Expanded(
                 child: ListView.separated(
                   separatorBuilder: (context, index) {
-                    return Divider();
+                    return const Divider();
                   },
                   itemCount: cartProvider.getCartList.length,
                   itemBuilder: (context, index) {
@@ -65,19 +66,10 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                   }
                 )
               ),
-              ListTile(
-                leading: Text('Sub Total'),
-                trailing: Text('\$$y'),
-              ),
-              ListTile(
-                leading: Text('Shipping'),
-                trailing: Text('\$$shipping'),
-              ),
-              Divider(),
-              ListTile(
-                leading: Text('Total'),
-                trailing: Text('\$$Total'),
-              ),
+              amountListTile(SubTotal, 'SubTotal'),
+              amountListTile(shipping.toString(), 'Shipping'),
+              const Divider(),
+              amountListTile(Total, 'Total'),
               Container(
                 width: double.infinity,
                 height: 50,
@@ -89,12 +81,13 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                   color: Colors.black87,
                   disabledColor: Colors.grey.withOpacity(.5),
                   disabledTextColor: Colors.black.withOpacity(.5),
-                  onPressed:(){
+                  onPressed:isLoading ? null : ()async{
+                    setState(() {isLoading = true;});
                     handlePayment(Total);
                     clearCart();
-                    //Navigator.pop(context);
+                    setState(() {isLoading = false;});
                   },
-                  child: Text(
+                  child: const Text(
                     'Purchase',
                     style: TextStyle(fontWeight: FontWeight.w600, fontSize: 17,color:Colors.white)
                   ),
@@ -103,6 +96,14 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
             ],
           )
         ),
+    );
+  }
+
+  //Checkout amount listTile
+  ListTile amountListTile(String amount, String title) {
+    return ListTile(
+      leading:  Text(title),
+      trailing: Text('\$$amount'),
     );
   }
 
@@ -119,7 +120,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
           publicKey: "FLWPUBK_TEST-1c6f5b9bae6b358afdc68e9ac9949939-X",
           currency: "USD",   
           redirectUrl: "https://flutterwave.com/ng/",
-          txRef: Uuid().v1(),   
+          txRef: const Uuid().v1(),   
           amount: amount,   
           customer: customer,   
           paymentOptions: "ussd, card, barter, payattitude",   
@@ -129,7 +130,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
         final ChargeResponse response = await flutterwave.charge();
         if (response != null) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
+            const SnackBar(
               content: 
               Text('Purchase Successful'),
               backgroundColor: Colors.green,

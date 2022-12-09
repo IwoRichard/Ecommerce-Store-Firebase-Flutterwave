@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, use_build_context_synchronously, avoid_print
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -29,25 +27,25 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20),
+          padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
+              const Text(
                 'Enter your email address',
                 style: TextStyle(
                   fontSize: 20, fontWeight: FontWeight.w600,color: Colors.black,
                 ),
               ),
-              Text(
+              const Text(
                 'A new password will be sent to your email address.',
               ),
-              SizedBox(height: 30,),
-              Text(
+              const SizedBox(height: 30,),
+              const Text(
                 'Email',
                 style: TextStyle(color: Colors.black87,fontWeight: FontWeight.w600),
               ),
-              SizedBox(height: 5),
+              const SizedBox(height: 5),
               Container(
                 height: 45,
                 decoration: BoxDecoration(
@@ -59,7 +57,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   textInputAction: TextInputAction.done,
                   keyboardType: TextInputType.emailAddress,
                   cursorColor: Colors.grey,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     hintText: 'example@gmail.com',
                     hintStyle: TextStyle(fontSize: 15,color: Colors.grey),
                     border: OutlineInputBorder(
@@ -70,7 +68,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   ),
                 ),
               ),
-              SizedBox(height: 20,),
+              const SizedBox(height: 20,),
               Container(
                 width: double.infinity,
                 height: 50,
@@ -86,7 +84,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                     setState(() {isLoading = true;});
                     if (emailController.text.isEmpty || !emailController.text.contains('@')) {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
+                        const SnackBar(
                           behavior: SnackBarBehavior.floating,
                           content: Text('Enter Valid Email Address'),
                           backgroundColor: Colors.red,
@@ -100,7 +98,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                       isLoading = false;
                     });
                   },
-                  child: Text(
+                  child: const Text(
                     'Submit',
                     style: TextStyle(fontWeight: FontWeight.w600, fontSize: 17,color:Colors.white)
                   ),
@@ -118,7 +116,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
       await FirebaseAuth.instance
         .sendPasswordResetEmail(email: emailController.text.trim());
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           behavior: SnackBarBehavior.floating,
           content: Text('Password Reset Email Sent'),
           backgroundColor: Colors.green,
@@ -132,7 +130,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
         behavior: SnackBarBehavior.floating,
         content: Text(e.message.toString()),
         backgroundColor: Colors.red,
-        duration: Duration(seconds: 3),
+        duration: const Duration(seconds: 3),
         )
       );
 

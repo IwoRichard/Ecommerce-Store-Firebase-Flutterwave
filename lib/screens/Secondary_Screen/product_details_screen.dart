@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -32,7 +30,11 @@ class _ProductDetailsState extends State<ProductDetails> {
         elevation: 0,
         title: const Text('Details',style: TextStyle(color: Colors.black),),
         centerTitle: true,
-        leading: IconButton(onPressed: (){Navigator.pop(context);}, icon: const Icon(Icons.arrow_back_ios_new_rounded,color: Colors.black,)),
+        leading: IconButton(
+          onPressed: (){Navigator.pop(context);}, 
+          icon: const Icon(
+            Icons.arrow_back_ios_new_rounded,
+            color: Colors.black,)),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -51,10 +53,10 @@ class _ProductDetailsState extends State<ProductDetails> {
               ),
             ),
             const SizedBox(height: 15,),
-            Text(widget.productName,style: TextStyle(fontSize: 20,fontWeight: FontWeight.w500),),
+            Text(widget.productName,style: const TextStyle(fontSize: 20,fontWeight: FontWeight.w500),),
             Text(
               '\$${widget.productPrice*quantity}',
-              style: TextStyle(fontSize: 30,fontWeight: FontWeight.w700),
+              style: const TextStyle(fontSize: 30,fontWeight: FontWeight.w700),
             ),
             const SizedBox(height: 15,),
             Row(
@@ -73,15 +75,15 @@ class _ProductDetailsState extends State<ProductDetails> {
                         quantity > 1 ? quantity-- : null;  
                       });
                     }, 
-                    icon: Icon(Icons.remove)
+                    icon: const Icon(Icons.remove)
                   )
                 ),
-                SizedBox(width: 15,),
+                const SizedBox(width: 15,),
                 Text(
                   '$quantity',
-                  style: TextStyle(fontSize: 18),
+                  style: const TextStyle(fontSize: 18),
                 ),
-                SizedBox(width: 15,),
+                const SizedBox(width: 15,),
                 Container(
                   height: 40,
                   width: 40,
@@ -95,10 +97,10 @@ class _ProductDetailsState extends State<ProductDetails> {
                         quantity++;
                       });
                     }, 
-                    icon: Icon(Icons.add)
+                    icon: const Icon(Icons.add)
                   )
                 ),
-                Spacer(),
+                const Spacer(),
                 Container(
                     width: 150,
                     height: 50,
@@ -124,10 +126,10 @@ class _ProductDetailsState extends State<ProductDetails> {
                             'productId': widget.productId,
                             'productQuantity': quantity
                           });
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Item Added to Cart'),backgroundColor: Colors.green,));
+                        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Item Added to Cart'),backgroundColor: Colors.green,));
                         setState(() {isLoading = false;});
                       },
-                      child: Text(
+                      child: const Text(
                         'Add to Cart',
                         style: TextStyle(fontWeight: FontWeight.w600, fontSize: 17,color:Colors.white)
                       ),

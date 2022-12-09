@@ -1,6 +1,3 @@
-
-// ignore_for_file: prefer_const_constructors, use_build_context_synchronously, must_be_immutable
-
 import 'package:flutter/material.dart';
 import '../services/firestore_user_database.dart';
 
@@ -9,8 +6,6 @@ class UserTile extends StatefulWidget {
   String? subtitle;
   TextEditingController? nameController;
   TextEditingController? addressController;
-  //String? address;
-  //String? name;
   String? trailing;
   UserTile({
     Key? key,
@@ -18,8 +13,6 @@ class UserTile extends StatefulWidget {
     this.subtitle,
     this.nameController,
     this.addressController,
-    //this.address,
-    //this.name,
     this.trailing,
   }) : super(key: key);
 
@@ -33,7 +26,7 @@ class _UserTileState extends State<UserTile> {
     return ListTile(
       tileColor: Colors.grey.withOpacity(.1),
       subtitle: Text(widget.subtitle ?? ''),
-      title: Text(widget.title,style: TextStyle(fontWeight: FontWeight.w600),),
+      title: Text(widget.title,style: const TextStyle(fontWeight: FontWeight.w600),),
       trailing: widget.trailing != null ? GestureDetector(
         onTap: widget.title == 'Display Name' ?
          ()async{
@@ -41,12 +34,12 @@ class _UserTileState extends State<UserTile> {
             context: context, 
             builder:(context) {
               return AlertDialog(
-                title: Text('Edit Name'),
+                title: const Text('Edit Name'),
                 content: TextField(
                   maxLines: 5,
                   autofocus: true,
                   controller: widget.nameController,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     hintText: 'Edit name'
                   ),
                 ),
@@ -56,7 +49,7 @@ class _UserTileState extends State<UserTile> {
                       Navigator.pop(context);
                       await FirestoreService().updateUserName(widget.nameController!.text);
                     }, 
-                    child: Text('Save')
+                    child: const Text('Save')
                   )
                 ],
               );
@@ -68,12 +61,12 @@ class _UserTileState extends State<UserTile> {
             context: context, 
             builder:(context) {
               return AlertDialog(
-                title: Text('Edit Address'),
+                title: const Text('Edit Address'),
                 content: TextField(
                   maxLines: 5,
                   autofocus: true,
                   controller: widget.addressController,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     hintText: 'Edit address'
                   ),
                 ),
@@ -83,7 +76,7 @@ class _UserTileState extends State<UserTile> {
                       Navigator.pop(context);
                       await FirestoreService().updateUserAddress(widget.addressController!.text);
                     }, 
-                    child: Text('Save')
+                    child: const Text('Save')
                   )
                 ],
               );

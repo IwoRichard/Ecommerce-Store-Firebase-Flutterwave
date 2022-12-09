@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors,  prefer_const_literals_to_create_immutables
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop/providers/cart_provider.dart';
@@ -22,10 +20,10 @@ class _CartScreenState extends State<CartScreen> {
         appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: .5,
-        title: Text('My Cart',style: TextStyle(fontSize: 34,fontWeight: FontWeight.w600,color: Colors.black),),
+        title: const Text('My Cart',style: TextStyle(fontSize: 34,fontWeight: FontWeight.w600,color: Colors.black),),
       ),
       body: cartProvider.getCartList.isEmpty ?
-      Center(child: Text('Cart is Empty'),) :
+      const Center(child: Text('Cart is Empty'),) :
       Padding(
           padding: const EdgeInsets.all(15),
           child: Column(
@@ -33,7 +31,7 @@ class _CartScreenState extends State<CartScreen> {
               Expanded(
                 child: ListView.separated(
                   separatorBuilder: (context, index) {
-                    return Divider();
+                    return const Divider();
                   },
                   itemCount: cartProvider.getCartList.length,
                   itemBuilder: (context, index) {
@@ -62,10 +60,10 @@ class _CartScreenState extends State<CartScreen> {
                   onPressed:(){
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context)=> CheckOutScreen())
+                      MaterialPageRoute(builder: (context)=> const CheckOutScreen())
                     );
                   },
-                  child: Text(
+                  child: const Text(
                     'CheckOut',
                     style: TextStyle(fontWeight: FontWeight.w600, fontSize: 17,color:Colors.white)
                   ),

@@ -1,9 +1,8 @@
-// ignore_for_file: prefer_const_constructors, avoid_print,  prefer_const_literals_to_create_immutables, use_build_context_synchronously
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
-import 'package:shop/widgets/list_Tile.dart';
+import 'package:shop/widgets/user_list_Tile.dart';
 import '../../services/firebase_auth.dart';
 import '../Auth_Screen/forgot_password_screen.dart';
 import '../Auth_Screen/login_screen.dart';
@@ -32,7 +31,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: .5,
-        title: Text('My Account',style: TextStyle(fontSize: 34,fontWeight: FontWeight.w600,color: Colors.black),),
+        title: const Text('My Account',style: TextStyle(fontSize: 34,fontWeight: FontWeight.w600,color: Colors.black),),
       ),
       body: StreamBuilder(
         stream: FirebaseFirestore.instance.collection('userInfo').doc(user?.uid).get().then((snapshot) async {
@@ -46,14 +45,14 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
         }).asStream(),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           return SingleChildScrollView(
-            physics: BouncingScrollPhysics(),
+            physics: const BouncingScrollPhysics(),
             child: Padding(
               padding: const EdgeInsets.all(15),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   tileTile('User Details'),
-                  SizedBox(height: 10,),
+                  const SizedBox(height: 10,),
                   UserTile(
                     title: 'Display Name',
                     subtitle: name,
@@ -70,17 +69,17 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                     addressController: addressController,
                     trailing: 'Edit',
                   ),
-                  SizedBox(height: 10,),
+                  const SizedBox(height: 10,),
                   tileTile('Security Settings'),
-                  SizedBox(height: 10,),
+                  const SizedBox(height: 10,),
                   GestureDetector(
                     onTap: (){
                       Navigator.push(
                           context, 
                           PageTransition(
-                            child: ForgotPasswordScreen(), 
+                            child: const ForgotPasswordScreen(), 
                             type: PageTransitionType.rightToLeft,
-                            duration: Duration(milliseconds: 300)
+                            duration: const Duration(milliseconds: 300)
                           ),
                       );
                     },
@@ -88,27 +87,27 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                       title: 'Reset Password',
                     ),
                   ),
-                  SizedBox(height: 10,),
+                  const SizedBox(height: 10,),
                   tileTile('Others'),
-                  SizedBox(height: 10,),
+                  const SizedBox(height: 10,),
                   UserTile(
                     title: 'Notification',
                   ),
                   UserTile(
                     title: 'Support',
                   ),
-                  SizedBox(height: 10,),
+                  const SizedBox(height: 10,),
                   TextButton.icon(
                     onPressed: ()async{
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Sign Out?'),
-                      duration: Duration(seconds: 5),
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: const Text('Sign Out?'),
+                      duration: const Duration(seconds: 5),
                       backgroundColor: Colors.red,
                       action: SnackBarAction(
                         textColor: Colors.white,
                         label: 'Yes',
                         onPressed: ()async{
                         await FirebaseAuthService().signout();
-                        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => LoginScreen()), (route) => false);
+                        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const LoginScreen()), (route) => false);
                       }),));
                     }, 
                     icon: const Icon(Icons.logout), 

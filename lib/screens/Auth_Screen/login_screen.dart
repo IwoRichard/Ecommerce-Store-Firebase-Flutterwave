@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, use_build_context_synchronously, avoid_print
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/button_list.dart';
@@ -37,21 +35,21 @@ class _LoginScreenState extends State<LoginScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
+                  const Text(
                     'Welcome back 😁',
                     style: TextStyle(
                       fontSize: 20, fontWeight: FontWeight.w600,color: Colors.black,
                     ),
                   ),
-                  Text(
+                  const Text(
                     'Sign in to continue',
                   ),
-                  SizedBox(height: 30,),
-                  Text(
+                  const SizedBox(height: 30,),
+                  const Text(
                     'Email',
                     style: TextStyle(color: Colors.black87,fontWeight: FontWeight.w600),
                   ),
-                  SizedBox(height: 5),
+                  const SizedBox(height: 5),
                   Container(
                     height: 45,
                     decoration: BoxDecoration(
@@ -63,7 +61,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       textInputAction: TextInputAction.next,
                       keyboardType: TextInputType.emailAddress,
                       cursorColor: Colors.grey,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         hintText: 'example@gmail.com',
                         hintStyle: TextStyle(fontSize: 15,color: Colors.grey),
                         border: OutlineInputBorder(
@@ -75,12 +73,12 @@ class _LoginScreenState extends State<LoginScreen> {
                       validator: validateEmail
                     ),
                   ),
-                  SizedBox(height: 10,),
-                  Text(
+                  const SizedBox(height: 10,),
+                  const Text(
                     'Password',
                     style: TextStyle(color: Colors.black87,fontWeight: FontWeight.w600),
                   ),
-                  SizedBox(height: 5),
+                  const SizedBox(height: 5),
                   Container(
                     height: 45,
                     decoration: BoxDecoration(
@@ -100,21 +98,21 @@ class _LoginScreenState extends State<LoginScreen> {
                             });
                           }, 
                           icon: obscureText ? 
-                          Icon(Icons.visibility, color: Colors.grey,) : 
-                          Icon(Icons.visibility_off, color: Colors.grey,)
+                          const Icon(Icons.visibility, color: Colors.grey,) : 
+                          const Icon(Icons.visibility_off, color: Colors.grey,)
                         ),
                         hintText: 'password',
-                        hintStyle: TextStyle(fontSize: 15,color: Colors.grey),
-                        border: OutlineInputBorder(
+                        hintStyle: const TextStyle(fontSize: 15,color: Colors.grey),
+                        border: const OutlineInputBorder(
                           borderSide: BorderSide.none,
                         ),
-                        contentPadding: EdgeInsets.only(left: 10),
+                        contentPadding: const EdgeInsets.only(left: 10),
                         filled: true
                       ),
                       validator: validatePassword
                     ),
                   ),
-                  SizedBox(height: 10,),
+                  const SizedBox(height: 10,),
                   Align(
                     alignment: Alignment.centerRight,
                     child: TextButton(
@@ -122,19 +120,19 @@ class _LoginScreenState extends State<LoginScreen> {
                         Navigator.push(
                           context, 
                           PageTransition(
-                            child: ForgotPasswordScreen(), 
+                            child: const ForgotPasswordScreen(), 
                             type: PageTransitionType.rightToLeft,
-                            duration: Duration(milliseconds: 300)
+                            duration: const Duration(milliseconds: 300)
                           ),
                         );
                       },
-                      child: Text(
+                      child: const Text(
                         'Forgot Password',
                         style: TextStyle(color: Colors.black87,fontWeight: FontWeight.w600),
                       ),
                     ),
                   ),
-                  SizedBox(height: 20,),
+                  const SizedBox(height: 20,),
                   Container(
                     width: double.infinity,
                     height: 50,
@@ -153,19 +151,18 @@ class _LoginScreenState extends State<LoginScreen> {
                         if (isvalid) {
                           User? result = await FirebaseAuthService().login(emailController.text, passwordController.text,context);
                           if (result != null) {
-                            print('Success!');
-                            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => BottomNav()), (route) => false);
+                            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const BottomNav()), (route) => false);
                           }
                         }
                         setState(() {isLoading = false;});
                       },
-                      child: Text(
+                      child: const Text(
                         'Login',
                         style: TextStyle(fontWeight: FontWeight.w600, fontSize: 17,color:Colors.white)
                       ),
                     )
                   ),
-                  SizedBox(height: 10,),
+                  const SizedBox(height: 10,),
                   Align(
                     alignment: Alignment.center,
                     child: SignInButton(
@@ -173,11 +170,11 @@ class _LoginScreenState extends State<LoginScreen> {
                       elevation: 0.5,
                       onPressed: ()async{
                         await FirebaseAuthService().googleSignIn();
-                        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => BottomNav()), (route) => false);
+                        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const BottomNav()), (route) => false);
                       }
                     ),
                   ),
-                  SizedBox(height: 20,),
+                  const SizedBox(height: 20,),
                   Align(
                     alignment: Alignment.center,
                     child: TextButton(
@@ -185,14 +182,14 @@ class _LoginScreenState extends State<LoginScreen> {
                         Navigator.push(
                           context, 
                           PageTransition(
-                            child: SignUpScreen(), 
+                            child: const SignUpScreen(), 
                             type: PageTransitionType.rightToLeft,
-                            duration: Duration(milliseconds: 300)
+                            duration: const Duration(milliseconds: 300)
                           ),
                         );
                       }, 
                       child: RichText(
-                          text: TextSpan(
+                          text: const TextSpan(
                             children: [
                               TextSpan(
                                 text: "Don't have an account? ",
@@ -222,7 +219,7 @@ class _LoginScreenState extends State<LoginScreen> {
     RegExp regExp = RegExp(pattern);
     if (formEmail!.isEmpty || formEmail == null || !regExp.hasMatch(formEmail)) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           behavior: SnackBarBehavior.floating,
           content: Text('Enter Valid Email Address'),
           backgroundColor: Colors.red,
@@ -239,7 +236,7 @@ class _LoginScreenState extends State<LoginScreen> {
   String? validatePassword(String? formPassword){
     if (formPassword!.isEmpty || formPassword == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           behavior: SnackBarBehavior.floating,
           content: Text('Password is required'),
           backgroundColor: Colors.red,

@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -26,30 +24,35 @@ class _CategoryState extends State<CategoryScreen> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        leading: IconButton(onPressed: (){Navigator.pop(context);}, icon: Icon(Icons.arrow_back_ios_new_rounded,color: Colors.black,)),
+        leading: IconButton(
+          onPressed: (){Navigator.pop(context);}, 
+          icon: const Icon(
+            Icons.arrow_back_ios_new_rounded,
+            color: Colors.black,)),
       ),
       body: FutureBuilder(
         future: FirebaseFirestore.instance.collection('categories').doc(widget.id).collection(widget.collection).get(),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (!snapshot.hasData) {
-            return Center(child: CircularProgressIndicator(),);
+            return const Center(child: CircularProgressIndicator(),);
           }
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15),
             child: MasonryGridView.count(
-              physics: BouncingScrollPhysics(),
+              physics: const BouncingScrollPhysics(),
               crossAxisCount: 2,
               mainAxisSpacing: 10,
               crossAxisSpacing: 10,
               itemCount: snapshot.data.docs.length, 
               itemBuilder: (context,index){
+                var data = snapshot.data.docs[index];
                 return GestureDetector(
                   onTap: () {
                     Navigator.of(context).push(MaterialPageRoute(builder: (context)=> ProductDetails(
-                      productId: snapshot.data.docs[index]['productId'],
-                      productName: snapshot.data.docs[index]['productName'],
-                      productImage: snapshot.data.docs[index]['productImage'],
-                      productPrice: snapshot.data.docs[index]['productPrice'], 
+                      productId: data['productId'],
+                      productName: data['productName'],
+                      productImage: data['productImage'],
+                      productPrice: data['productPrice'], 
                     )));
                   },
                   child: Column(
@@ -58,22 +61,22 @@ class _CategoryState extends State<CategoryScreen> {
                       ClipRRect(
                         borderRadius: BorderRadius.circular(20),
                         child: Hero(
-                          tag: snapshot.data.docs[index]['productImage'],
-                          child: Image.network(snapshot.data.docs[index]['productImage']))),
-                      SizedBox(height: 1,),
+                          tag: data['productImage'],
+                          child: Image.network(data['productImage']))),
+                      const SizedBox(height: 1,),
                       Text(
-                        snapshot.data.docs[index]['productName'],
+                        data['productName'],
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(fontWeight: FontWeight.w500,color: Colors.black.withOpacity(.5)),
                       ),
-                      SizedBox(height: 3,),
+                      const SizedBox(height: 3,),
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Text(
-                            '\$${snapshot.data.docs[index]['productPrice'].toString()}',
-                            style: TextStyle(fontWeight: FontWeight.w600,fontSize: 18),
+                            '\$${data['productPrice'].toString()}',
+                            style: const TextStyle(fontWeight: FontWeight.w600,fontSize: 18),
                           ),
                         ],
                       )

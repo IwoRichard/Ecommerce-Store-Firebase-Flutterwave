@@ -1,4 +1,3 @@
-// ignore_for_file: prefer_const_constructors
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -30,9 +29,9 @@ class MyApp extends StatelessWidget {
           stream: FirebaseAuthService().firebaseAuth.authStateChanges(),
           builder: (context,AsyncSnapshot snapshot){
             if (snapshot.hasData) {
-              return BottomNav();
+              return const BottomNav();
             }
-            return DefaultHome();
+            return const DefaultHome();
           }
         ),
       ),
