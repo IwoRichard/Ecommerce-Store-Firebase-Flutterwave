@@ -1,11 +1,13 @@
-// ignore_for_file: prefer_const_constructors,  prefer_const_literals_to_create_immutables, import_of_legacy_library_into_null_safe
+// ignore_for_file: prefer_const_constructors,  prefer_const_literals_to_create_immutables, import_of_legacy_library_into_null_safe, avoid_print, unnecessary_null_comparison, use_build_context_synchronously
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:uuid/uuid.dart';
 import '../../providers/cart_provider.dart';
 import '../../widgets/cart_product_card.dart';
+import 'package:flutterwave_standard/flutterwave.dart';
 
 class CheckOutScreen extends StatefulWidget {
   const CheckOutScreen({super.key});
@@ -25,20 +27,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
     String y = subTotal.toStringAsFixed(2);
     double shipping = 10.0;
     double total = subTotal + shipping;
-    String x = total.toStringAsFixed(2);
-
-    //Function to clear cart after successful purchase
-    void clearCart()async{
-      var snapshots = await FirebaseFirestore.instance
-      .collection('cart')
-      .doc(FirebaseAuth.instance.currentUser!.uid)
-      .collection('userCart')
-      .get();
-
-      for(var doc in snapshots.docs){
-        await doc.reference.delete();
-      }
-    }
+    String Total = total.toStringAsFixed(2);
 
     return Scaffold(
         appBar: AppBar(
@@ -87,7 +76,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
               Divider(),
               ListTile(
                 leading: Text('Total'),
-                trailing: Text('\$$x'),
+                trailing: Text('\$$Total'),
               ),
               Container(
                 width: double.infinity,
@@ -101,8 +90,9 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                   disabledColor: Colors.grey.withOpacity(.5),
                   disabledTextColor: Colors.black.withOpacity(.5),
                   onPressed:(){
+                    handlePayment(Total);
                     clearCart();
-                    Navigator.pop(context);
+                    //Navigator.pop(context);
                   },
                   child: Text(
                     'Purchase',
@@ -115,4 +105,61 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
         ),
     );
   }
+
+    //Flutterwave payment gateway
+    void handlePayment(String amount) async {
+      try {
+        final Customer customer = Customer(
+          name: "Flutterwave Developer",
+          phoneNumber: "1234566677777",   
+          email: "customer@customer.com" 
+        );
+        final Flutterwave flutterwave = Flutterwave(
+          context: context,
+          publicKey: "FLWPUBK_TEST-1c6f5b9bae6b358afdc68e9ac9949939-X",
+          currency: "USD",   
+          redirectUrl: "https://flutterwave.com/ng/",
+          txRef: Uuid().v1(),   
+          amount: amount,   
+          customer: customer,   
+          paymentOptions: "ussd, card, barter, payattitude",   
+          customization: Customization(title: "My Payment"),
+          isTestMode: true
+        );
+        final ChargeResponse response = await flutterwave.charge();
+        if (response != null) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: 
+              Text('Purchase Successful'),
+              backgroundColor: Colors.green,
+              )
+            );
+        }else{
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: 
+              Text(response.toString()),
+              backgroundColor: Colors.red,
+              )
+            );
+        }
+      } catch (e) {
+        print(e);
+      }
+    }
+
+
+    //Function to clear cart after successful purchase
+    void clearCart()async{
+      var snapshots = await FirebaseFirestore.instance
+      .collection('cart')
+      .doc(FirebaseAuth.instance.currentUser!.uid)
+      .collection('userCart')
+      .get();
+
+      for(var doc in snapshots.docs){
+        await doc.reference.delete();
+      }
+    }
 }
