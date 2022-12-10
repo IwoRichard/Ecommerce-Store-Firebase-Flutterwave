@@ -23,19 +23,6 @@ class CartCard extends StatefulWidget {
 }
 
 class _CartCardState extends State<CartCard> {
-  int quantity = 1;
-
-  //Function to update the quantity if changed from the cart page
-  void quantityFunc(){
-    FirebaseFirestore.instance
-      .collection('cart')
-      .doc(FirebaseAuth.instance.currentUser!.uid)
-      .collection('userCart')
-      .doc(widget.productId)
-      .update({
-        'productQuantity': quantity,
-      });
-  }
 
   //Function to delete a particular product from cart
   void productDelete(){
@@ -90,50 +77,23 @@ class _CartCardState extends State<CartCard> {
               Row(
                 children: [
                   Text(
-                    '\$${widget.productPrice*quantity}',
+                    '\$${widget.productPrice}',
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(fontSize: 19,fontWeight: FontWeight.w600),
                   ),
                   Spacer(),
                   Container(
-                    height: 40,
-                    width: 40,
                     decoration: BoxDecoration(
-                      color: Colors.grey.withOpacity(.5),
-                      borderRadius: BorderRadius.circular(10),
+                      color: Colors.blueAccent,
+                      borderRadius: BorderRadius.circular(15)
                     ),
-                    child: IconButton(
-                      onPressed: (){
-                        setState(() {
-                          quantity > 1 ? quantity-- : null;
-                          quantityFunc();
-                        });
-                      }, 
-                      icon: Icon(Icons.remove)
-                    )
-                  ),
-                  SizedBox(width: 15,),
-                  Text(
-                    widget.productQuantity.toString(),
-                    style: TextStyle(fontSize: 18),
-                  ),
-                  SizedBox(width: 15,),
-                  Container(
-                    height: 40,
-                    width: 40,
-                    decoration: BoxDecoration(
-                      color: Colors.grey.withOpacity(.5),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: IconButton(
-                      onPressed: (){
-                        setState(() {
-                          quantity++;
-                          quantityFunc();
-                        });
-                      }, 
-                      icon: Icon(Icons.add)
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        'quantity: ${widget.productQuantity}',
+                        style: TextStyle(fontWeight: FontWeight.w500),
+                      ),
                     )
                   ),
                 ],
