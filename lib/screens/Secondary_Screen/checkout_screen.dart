@@ -138,9 +138,9 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
             clearCart();
         }else{
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
+            const SnackBar(
               content: 
-              Text(response.toString()),
+              Text('Purchase Unsuccessful'),
               backgroundColor: Colors.red,
               )
             );
