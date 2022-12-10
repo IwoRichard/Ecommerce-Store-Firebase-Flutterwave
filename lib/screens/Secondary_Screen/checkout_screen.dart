@@ -81,10 +81,9 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                   color: Colors.black87,
                   disabledColor: Colors.grey.withOpacity(.5),
                   disabledTextColor: Colors.black.withOpacity(.5),
-                  onPressed:isLoading ? null : ()async{
+                  onPressed: isLoading ? null : ()async{
                     setState(() {isLoading = true;});
-                    handlePayment(Total);
-                    clearCart();
+                    await handlePayment(Total);
                     setState(() {isLoading = false;});
                   },
                   child: const Text(
@@ -108,7 +107,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
   }
 
     //Flutterwave payment gateway
-    void handlePayment(String amount) async {
+    Future handlePayment(String amount) async {
       try {
         final Customer customer = Customer(
           name: "Flutterwave Developer",
@@ -128,7 +127,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
           isTestMode: true
         );
         final ChargeResponse response = await flutterwave.charge();
-        if (response != null) {
+        if (response.status == 'success') {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content: 
@@ -136,6 +135,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
               backgroundColor: Colors.green,
               )
             );
+            clearCart();
         }else{
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
