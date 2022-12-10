@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously, non_constant_identifier_names
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -102,7 +104,10 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
   ListTile amountListTile(String amount, String title) {
     return ListTile(
       leading:  Text(title),
-      trailing: Text('\$$amount'),
+      trailing: Text(
+        '\$$amount',
+        style: const TextStyle(fontSize: 17,fontWeight: FontWeight.w600),
+      ),
     );
   }
 
