@@ -132,7 +132,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
           isTestMode: true
         );
         final ChargeResponse response = await flutterwave.charge();
-        if (response.status == 'success') {
+        if (response != null) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content: 
